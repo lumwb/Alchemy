@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "769202771089",
+    "firebase_url": "https://alchemy-4cbb6.firebaseio.com",
+    "project_id": "alchemy-4cbb6",
+    "storage_bucket": "alchemy-4cbb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769202771089:android:24a42bd867789b48",
+        "android_client_info": {
+          "package_name": "com.nus.alchemy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769202771089-6n7u8mg8rjmd7hk5rv9e7f6nconc4edq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBurnxrNxd8pWjHedfjneIC4b_GqCJyU0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769202771089-6n7u8mg8rjmd7hk5rv9e7f6nconc4edq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
