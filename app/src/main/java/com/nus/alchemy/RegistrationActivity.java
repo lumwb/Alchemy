@@ -73,10 +73,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "successfull", Toast.LENGTH_SHORT).show();
+                            Intent goToAboutPage = new Intent(getApplicationContext(), AboutActivity.class);
+                            startActivity(goToAboutPage);
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "failed to register", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

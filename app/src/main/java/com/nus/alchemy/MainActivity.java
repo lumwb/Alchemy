@@ -79,7 +79,9 @@
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
 
-                            //go to either the profile or the reg details page
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "invalid account", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
