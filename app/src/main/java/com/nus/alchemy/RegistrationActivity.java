@@ -74,6 +74,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Intent goToAboutPage = new Intent(getApplicationContext(), AboutActivity.class);
+                            finish();
                             startActivity(goToAboutPage);
                         }
                         else {

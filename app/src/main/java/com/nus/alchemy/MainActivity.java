@@ -78,7 +78,9 @@
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
-
+                            Intent goToProfilePage = new Intent(getApplicationContext(), ProfileActivity.class);
+                            finish();
+                            startActivity(goToProfilePage);
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "invalid account", Toast.LENGTH_SHORT).show();

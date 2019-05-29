@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegistrationActivity"
-    android:background="@drawable/background">
-
+    android:background="@drawable/skybluebackground">
 
     <ImageView
         android:id="@+id/logo"
@@ -14,7 +13,7 @@
         android:layout_height="140dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/alchemyround" />
+        app:srcCompat="@drawable/alchemyround"/>
 
     <EditText
         android:id="@+id/emailEditText"
