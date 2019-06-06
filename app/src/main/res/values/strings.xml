@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Alchemy</string>
+    
+    <string-array name="sex">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
 </resources>

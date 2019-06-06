@@ -51,8 +51,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             Intent goToLoginPage = new Intent(this, MainActivity.class);
             startActivity(goToLoginPage);
         }
-
-
     }
 
     private void registerUser() {
@@ -66,7 +64,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         progressDialog.setMessage("Registering...");
         progressDialog.show();
-
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -82,9 +79,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
                 });
-
         progressDialog.hide();
-
     }
 
 }
