@@ -14,4 +14,13 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:text="ProfilePage" />
+
+    <TextView
+        android:id="@+id/logoutTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="149dp"
+        android:layout_marginTop="192dp"
+        android:layout_centerHorizontal="true"
+        android:text="Logout" />
 </RelativeLayout>

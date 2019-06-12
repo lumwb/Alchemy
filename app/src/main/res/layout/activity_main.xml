@@ -56,4 +56,13 @@
         android:layout_marginTop="20dp"
         android:text="Don't have an account yet? Register Here" />
 
+    <TextView
+        android:id="@+id/forgotPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="172dp"
+        android:layout_marginBottom="287dp"
+        android:layout_below="@id/registrationPageTextView"
+        android:text="Forgot Your Password" />
+
 </RelativeLayout>

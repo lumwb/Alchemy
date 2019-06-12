@@ -25,6 +25,7 @@
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private TextView forgotPasswordTextView;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 
@@ -37,31 +38,20 @@
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         loginButton = (Button) findViewById(R.id.loginButton);
+        forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
+
         if (firebaseAuth.getCurrentUser() != null) {
-            //user already logged in
-            //go to Profile if already registered properly, else go to the requirements page
-            /*
             Intent goToProfileActivity = new Intent(getApplicationContext(), ProfileActivity.class);
             finish();
             startActivity(goToProfileActivity);
-            */
-
-            Intent goToAbout = new Intent(this, AboutActivity.class);
-            finish();
-            startActivity(goToAbout);
-            if (true) {
-
-            }
-            else {
-            //refer to comments
-            }
         }
 
         registrationPageTextView.setOnClickListener(this);
         loginButton.setOnClickListener(this);
+        forgotPasswordTextView.setOnClickListener(this);
     }
 
      @Override
@@ -73,6 +63,13 @@
          }
          if (v == loginButton) {
              userLogin();
+
+         }
+         if (v == forgotPasswordTextView) {
+             Intent intent = new Intent(this, ForgotActivity.class);
+             startActivity(intent);
+             finish();
+             return;
          }
      }
 
