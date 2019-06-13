@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,15 +18,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText emailEditText;
     private EditText passwordEditText;
+    private EditText nameEditText;
+    private EditText ageEditText;
+    private RadioGroup sexRadioGroup;
     private Button registerButton;
     private TextView loginPageTextView;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        ageEditText = (EditText) findViewById(R.id.ageEditText);
+        sexRadioGroup = (RadioGroup) findViewById(R.id.sexRadioGroup);
         registerButton = (Button) findViewById(R.id.registerButton);
         loginPageTextView = (TextView) findViewById(R.id.loginPageTextView);
         progressDialog = new ProgressDialog(this);
@@ -56,9 +67,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void registerUser() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        final String name = nameEditText.getText().toString().trim();
+        final String age = ageEditText.getText().toString().trim();
+        int radioButtonID = sexRadioGroup.getCheckedRadioButtonId();
+        RadioButton rb = (RadioButton) findViewById(radioButtonID);
+        final String sex = rb.getText().toString();
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Email and Password is required.", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name) || TextUtils.isEmpty(sex)) {
+            Toast.makeText(this, "User details are incomplete.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -70,9 +86,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent goToAboutPage = new Intent(getApplicationContext(), AboutActivity.class);
-                            finish();
+                            String userID = firebaseAuth.getCurrentUser().getUid();
+                            createUserDb(userID, name, age, sex);
+                            Intent goToAboutPage = new Intent(getApplicationContext(), ProfileActivity.class);
                             startActivity(goToAboutPage);
+                            finish();
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "failed to register", Toast.LENGTH_SHORT).show();
@@ -82,4 +100,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         progressDialog.hide();
     }
 
+    private void createUserDb(String userID, String name, String age, String sex) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(userID);
+        databaseReference.child("Name").setValue(name);
+        databaseReference.child("Age").setValue(age);
+        databaseReference.child("Sex").setValue(sex);
+    }
 }
