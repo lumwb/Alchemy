@@ -16,7 +16,10 @@ public class TodaysEventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todays_events);
+        setUpBottomNavBar();
+    }
 
+    private void setUpBottomNavBar() {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(2);

@@ -33,22 +33,12 @@
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        registrationPageTextView = (TextView) findViewById(R.id.registrationPageTextView);
-        emailEditText = (EditText) findViewById(R.id.emailEditText);
-        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
-        progressDialog = new ProgressDialog(this);
-        firebaseAuth = FirebaseAuth.getInstance();
-
-
+        initAttributes();
         if (firebaseAuth.getCurrentUser() != null) {
             Intent goToProfileActivity = new Intent(getApplicationContext(), ProfileActivity.class);
             finish();
             startActivity(goToProfileActivity);
         }
-
         registrationPageTextView.setOnClickListener(this);
         loginButton.setOnClickListener(this);
         forgotPasswordTextView.setOnClickListener(this);
@@ -63,7 +53,6 @@
          }
          if (v == loginButton) {
              userLogin();
-
          }
          if (v == forgotPasswordTextView) {
              Intent intent = new Intent(this, ForgotActivity.class);
@@ -76,30 +65,41 @@
      private void userLogin() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "incomplete user details", Toast.LENGTH_SHORT).show();
             return;
         }
-
         progressDialog.setMessage("Wait for Login");
         progressDialog.show();
+        signIn(email, password);
+     }
 
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
-                this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            Intent goToProfilePage = new Intent(getApplicationContext(), ProfileActivity.class);
-                            finish();
-                            startActivity(goToProfilePage);
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "invalid account", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
+     private void signIn(String email, String password) {
+         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
+                 this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         progressDialog.dismiss();
+                         if (task.isSuccessful()) {
+                             Intent goToProfilePage = new Intent(getApplicationContext(), ProfileActivity.class);
+                             finish();
+                             startActivity(goToProfilePage);
+                         }
+                         else {
+                             Toast.makeText(getApplicationContext(), "invalid account", Toast.LENGTH_SHORT).show();
+                         }
+                     }
+                 }
+         );
+     }
+
+     private void initAttributes() {
+         registrationPageTextView = (TextView) findViewById(R.id.registrationPageTextView);
+         emailEditText = (EditText) findViewById(R.id.emailEditText);
+         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+         loginButton = (Button) findViewById(R.id.loginButton);
+         forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
+         progressDialog = new ProgressDialog(this);
+         firebaseAuth = FirebaseAuth.getInstance();
      }
  }

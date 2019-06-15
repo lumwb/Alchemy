@@ -26,6 +26,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutTextView = (TextView) findViewById(R.id.logoutTextView);
         logoutTextView.setOnClickListener(this);
 
+        setUpBottomNavBar();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == logoutTextView) {
+            Intent logout = new Intent(this, MainActivity.class);
+            FirebaseAuth.getInstance().signOut();
+            logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(logout);
+            finish();
+            return;
+        }
+    }
+
+    private void setUpBottomNavBar() {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
@@ -56,17 +72,5 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == logoutTextView) {
-            Intent logout = new Intent(this, MainActivity.class);
-            FirebaseAuth.getInstance().signOut();
-            logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(logout);
-            finish();
-            return;
-        }
     }
 }

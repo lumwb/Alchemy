@@ -39,6 +39,25 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        initAttributes();
+        registerButton.setOnClickListener(this);
+        loginPageTextView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == registerButton) {
+            registerUser();
+
+        }
+        if (v == loginPageTextView) {
+            Intent goToLoginPage = new Intent(this, MainActivity.class);
+            startActivity(goToLoginPage);
+            finish();
+        }
+    }
+
+    private void initAttributes() {
         emailEditText = (EditText) findViewById(R.id.emailEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
@@ -48,20 +67,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         loginPageTextView = (TextView) findViewById(R.id.loginPageTextView);
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
-
-        registerButton.setOnClickListener(this);
-        loginPageTextView.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == registerButton) {
-            registerUser();
-        }
-        if (v == loginPageTextView) {
-            Intent goToLoginPage = new Intent(this, MainActivity.class);
-            startActivity(goToLoginPage);
-        }
     }
 
     private void registerUser() {
@@ -72,15 +77,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         int radioButtonID = sexRadioGroup.getCheckedRadioButtonId();
         RadioButton rb = (RadioButton) findViewById(radioButtonID);
         final String sex = rb.getText().toString();
-
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name) || TextUtils.isEmpty(sex)) {
             Toast.makeText(this, "User details are incomplete.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         progressDialog.setMessage("Registering...");
         progressDialog.show();
+        createAccount(email, password, name, age, sex);
+        progressDialog.hide();
+    }
 
+    private void createAccount(String email, String password, final String name, final String age, final String sex) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).
                 addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -97,7 +104,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
                 });
-        progressDialog.hide();
     }
 
     private void createUserDb(String userID, String name, String age, String sex) {
