@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/myProfile"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="Profile" />
+
+    <item
+        android:id="@+id/myEvents"
+        android:icon="@drawable/ic_event_available_black_24dp"
+        android:title="My Events" />
+
+    <item
+        android:id="@+id/todayEvents"
+        android:icon="@drawable/ic_event_note_black_24dp"
+        android:title="Events" />
+
+    <item
+        android:id="@+id/myChats"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="My Chats" />
+</menu>
