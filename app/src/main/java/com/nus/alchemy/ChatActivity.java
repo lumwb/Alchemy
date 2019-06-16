@@ -1,5 +1,6 @@
 package com.nus.alchemy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nus.alchemy.Model.MediaAdapter;
 import com.nus.alchemy.Model.MessageAdapter;
 import com.nus.alchemy.Model.MessageObject;
 
@@ -29,7 +31,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mChat;
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
+    private RecyclerView mMedia;
+    private RecyclerView.Adapter mMediaAdapter;
+    private RecyclerView.LayoutManager mMediaLayoutManager;
     private Button mSend;
+    private Button mAddMedia;
     ArrayList<MessageObject> messageList;
     String chatID;
     DatabaseReference mChatDb;
@@ -41,9 +47,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         mSend = (Button) findViewById(R.id.send);
         mSend.setOnClickListener(this);
+        mAddMedia = (Button) findViewById(R.id.addMedia);
+        mAddMedia.setOnClickListener(this);
         chatID = getIntent().getExtras().getString("chatID");
         mChatDb = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatID);
-        initRecyclerView();
+        initMessage();
+        initMedia();
         getChatMessages();
     }
 
@@ -60,6 +69,47 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             }
             mMessage.setText(null);
         }
+        if (v == mAddMedia) {
+            openGallery();
+        }
+    }
+
+    int PICK_IMAGE_INTENT = 1;
+    ArrayList<String> mediaURIList = new ArrayList<>();
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture(s)"), PICK_IMAGE_INTENT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE_INTENT) {
+                if (data.getClipData() == null) {
+                    mediaURIList.add(data.getData().toString());
+                } else {
+                    for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                        mediaURIList.add(data.getClipData().getItemAt(i).getUri().toString());
+                    }
+                }
+                mMediaAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private void initMedia() {
+        mediaURIList = new ArrayList<>();
+        mMedia = findViewById(R.id.mediaList);
+        mMedia.setNestedScrollingEnabled(false);
+        mMedia.setHasFixedSize(false);
+        mMediaLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.HORIZONTAL, false);
+        mMedia.setLayoutManager(mMediaLayoutManager);
+        mMediaAdapter = new MediaAdapter(getApplicationContext(), mediaURIList);
+        mMedia.setAdapter(mMediaAdapter);
     }
 
     private void getChatMessages() {
@@ -102,7 +152,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initRecyclerView() {
+    private void initMessage() {
         messageList = new ArrayList<>();
         mChat = findViewById(R.id.messageList);
         mChat.setNestedScrollingEnabled(false);
