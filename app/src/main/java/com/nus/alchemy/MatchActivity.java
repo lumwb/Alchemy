@@ -29,11 +29,10 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if (v == sendTextButton) {
             String key = FirebaseDatabase.getInstance().getReference().child("Chats").push().getKey();
-            FirebaseDatabase.getInstance().getReference().child("Chats").setValue(key);
+            //FirebaseDatabase.getInstance().getReference().child("Chats").child(key); //set value?
             FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
             //need to get userID of the other person from the group chat
             FirebaseDatabase.getInstance().getReference().child("Users").child("B4ekukqePvcA7N5o3gZedzmEiC33").child("chat").child(key).setValue(true);
-
             Intent goToMyChats = new Intent(getApplicationContext(), MyChatsActivity.class);
             startActivity(goToMyChats);
             finish();

@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nus.alchemy.Model.ChatListAdapter;
 import com.nus.alchemy.Model.ChatObject;
 
 import java.util.ArrayList;
@@ -47,6 +48,15 @@ public class MyChatsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                         ChatObject chatObject = new ChatObject(childSnapshot.getKey());
+                        boolean exists = false;
+                        for (ChatObject mChatIterator : chatList) {
+                            if (mChatIterator.getChatID().equals(chatObject.getChatID())) {
+                                exists = true;
+                            }
+                        }
+                        if (exists) {
+                            continue;
+                        }
                         chatList.add(chatObject);
                         mChatListAdapter.notifyDataSetChanged();
                     }

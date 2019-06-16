@@ -9,6 +9,6 @@ public class ChatObject {
         this.chatID = chatID;
     }
 
-    public String getChatID() {return chatID; }
+    public String getChatID() { return chatID; }
 
 }
