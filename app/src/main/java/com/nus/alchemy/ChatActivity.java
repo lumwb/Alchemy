@@ -50,21 +50,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-        mSend = (Button) findViewById(R.id.send);
-        mSend.setOnClickListener(this);
-        mAddMedia = (Button) findViewById(R.id.addMedia);
-        mAddMedia.setOnClickListener(this);
-        mMessage = (EditText) findViewById(R.id.messageInput);
-        chatID = getIntent().getExtras().getString("chatID");
-        mChatDb = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatID);
-
+        initAttributes();
         initMessage();
         initMedia();
         getChatMessages();
-
     }
-
     int totalMediaUploaded = 0;
     ArrayList<String> mediaIdList = new ArrayList<>();
 
@@ -78,38 +68,43 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             if (!mMessage.getText().toString().isEmpty()) {
                 newMessageMap.put("text", mMessage.getText().toString());
             }
+
             if (!mediaURIList.isEmpty()) {
-                for (String mediaURI : mediaURIList) {
-                    String mediaID = newMessageDb.child("media").push().getKey();
-                    mediaIdList.add(mediaID);
-                    final StorageReference filePath = FirebaseStorage.getInstance().getReference().child("chat").child(chatID).child(messageID).child(mediaID);
-                    UploadTask uploadTask = filePath.putFile(Uri.parse(mediaURI));
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    newMessageMap.put("/media/" + mediaIdList.get(totalMediaUploaded) + "/", uri.toString());
-                                    totalMediaUploaded++;
-                                    if (totalMediaUploaded == mediaURIList.size()) {
-                                        updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-             } else {
-                 if (!mMessage.getText().toString().isEmpty()) {
+                uploadMediaToStorage(messageID, newMessageDb, newMessageMap);
+            } else {
+                if (!mMessage.getText().toString().isEmpty()) {
                      updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
-                 }
-             }
+                }
+            }
 
         }
 
         if (v == mAddMedia) {
             openGallery();
+        }
+    }
+
+    private void uploadMediaToStorage(String messageID, final DatabaseReference newMessageDb, final Map newMessageMap) {
+        for (String mediaURI : mediaURIList) {
+            String mediaID = newMessageDb.child("media").push().getKey();
+            mediaIdList.add(mediaID);
+            final StorageReference filePath = FirebaseStorage.getInstance().getReference().child("chat").child(chatID).child(messageID).child(mediaID);
+            UploadTask uploadTask = filePath.putFile(Uri.parse(mediaURI));
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            newMessageMap.put("/media/" + mediaIdList.get(totalMediaUploaded) + "/", uri.toString());
+                            totalMediaUploaded++;
+                            if (totalMediaUploaded == mediaURIList.size()) {
+                                updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -149,6 +144,16 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void initAttributes() {
+        mSend = (Button) findViewById(R.id.send);
+        mSend.setOnClickListener(this);
+        mAddMedia = (Button) findViewById(R.id.addMedia);
+        mAddMedia.setOnClickListener(this);
+        mMessage = (EditText) findViewById(R.id.messageInput);
+        chatID = getIntent().getExtras().getString("chatID");
+        mChatDb = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatID);
+    }
+
     private void initMedia() {
         mediaURIList = new ArrayList<>();
         mMedia = findViewById(R.id.mediaList);
@@ -167,15 +172,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 if (dataSnapshot.exists()) {
                     String text = "";
                     String creatorID = "";
-
+                    ArrayList<String> mediaUrlList = new ArrayList<>();
                     if (dataSnapshot.child("text").getValue() != null) {
                         text = dataSnapshot.child("text").getValue().toString();
                     }
                     if (dataSnapshot.child("creator").getValue() != null) {
                         creatorID = dataSnapshot.child("creator").getValue().toString();
                     }
-
-                    MessageObject myMessage = new MessageObject(creatorID ,dataSnapshot.getKey(),text);
+                    if (dataSnapshot.child("media").getChildrenCount() > 0) {
+                        for (DataSnapshot mediaSnapShot : dataSnapshot.child("media").getChildren()) {
+                            mediaUrlList.add(mediaSnapShot.getValue().toString());
+                        }
+                    }
+                    MessageObject myMessage = new MessageObject(creatorID ,dataSnapshot.getKey(),text, mediaUrlList);
                     messageList.add(myMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size() - 1);
                     mChatAdapter.notifyDataSetChanged();
