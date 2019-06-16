@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nus.alchemy.R;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
@@ -37,10 +36,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
         holder.mMessage.setText(messageList.get(position).getMessage());
         holder.mSender.setText(messageList.get(position).getSenderID());
+
+        if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
+            holder.mViewMedia.setVisibility(View.GONE);
+        }
         holder.mViewMedia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fresco.initialize(v.getContext());
                 new ImageViewer.Builder(v.getContext(), messageList.get(holder.getAdapterPosition()).getMediaUrlList())
                         .setStartPosition(0)
                         .show();
