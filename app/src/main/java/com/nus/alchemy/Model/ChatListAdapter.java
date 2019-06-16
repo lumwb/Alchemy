@@ -1,5 +1,7 @@
-package com.nus.alchemy;
+package com.nus.alchemy.Model;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nus.alchemy.Model.ChatObject;
+import com.nus.alchemy.ChatActivity;
+import com.nus.alchemy.R;
 
 import java.util.ArrayList;
 
@@ -31,9 +34,19 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatListViewHolder holder, int position) {
-          holder.mTitle.setText(chatList.get(position).getChatID());
+    public void onBindViewHolder(@NonNull final ChatListViewHolder holder, final int position) {
+        holder.mTitle.setText(chatList.get(position).getChatID());
 
+        holder.mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("chatID", chatList.get(holder.getAdapterPosition()).getChatID());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
