@@ -2,6 +2,7 @@ package com.nus.alchemy.Model;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,12 +40,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
     @Override
     public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
-        String senderID = messageList.get(position).getSenderID();
+        final String senderID = messageList.get(position).getSenderID();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(senderID);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String creatorName = dataSnapshot.child("Name").getValue().toString();
+                if (senderID.equals(FirebaseAuth.getInstance().getUid())) {
+                    holder.mSender.setGravity(Gravity.RIGHT | Gravity.END);
+                }
+                else {
+                    holder.mSender.setGravity(Gravity.LEFT | Gravity.START);
+                }
                 holder.mSender.setText(creatorName);
             }
             @Override
@@ -52,8 +60,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
         });
         holder.mMessage.setText(messageList.get(position).getMessage());
-        //holder.mSender.setText(messageList.get(position).getSenderID());
-        //holder.mSender.setText(creatorName);
 
         if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
             holder.mViewMedia.setText(null); //this is not okay
