@@ -5,10 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.nus.alchemy.Model.EventAdapter;
+import com.nus.alchemy.Model.EventObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyEventsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,6 +30,14 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         setUpBottomNavBar();
         tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
         tempMatchTextView.setOnClickListener(this);
+        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+
+        EventAdapter eventAdapter = new EventAdapter(createList(30));
+        recList.setAdapter(eventAdapter);
 
     }
 
@@ -66,4 +82,20 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+    private List<EventObject> createList(int size) {
+
+        List<EventObject> result = new ArrayList<EventObject>();
+        for (int i=1; i <= size; i++) {
+            EventObject ci = new EventObject();
+            ci.name = EventObject.NAME_PREFIX + i;
+            ci.surname = EventObject.SURNAME_PREFIX + i;
+            ci.email = EventObject.EMAIL_PREFIX + i + "@test.com";
+
+            result.add(ci);
+
+        }
+
+        return result;
+    }
 }
+
