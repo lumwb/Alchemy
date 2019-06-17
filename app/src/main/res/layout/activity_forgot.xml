@@ -4,13 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ForgotActivity">
+    tools:context=".ForgotActivity"
+    android:background="@drawable/gradient">
+
+    <TextView
+        android:id="@+id/forgotActivityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Forgot Your Password?"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:textStyle="bold|italic"/>
+
+    <EditText
+        android:id="@+id/EnterEmailEditText"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Enter Your Email    "
+        android:drawableRight="@drawable/ic_email_pink_24dp"/>
 
     <TextView
         android:id="@+id/backToLoginTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="backToLogin"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="473dp" />
+        android:text="Back To Login"
+        android:textStyle="italic"
+        android:layout_below="@id/EnterEmailEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="80dp"/>
+
 </RelativeLayout>

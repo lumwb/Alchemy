@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     ArrayList<MessageObject> messageList;
+    //boolean showMediaButton;
 
     public MessageAdapter(ArrayList<MessageObject> messageList) {
         this.messageList = messageList;
@@ -38,7 +39,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.mSender.setText(messageList.get(position).getSenderID());
 
         if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
-            holder.mViewMedia.setVisibility(View.GONE);
+            holder.mViewMedia.setText(null); //this is not okay
+            //holder.mViewMedia.setVisibility(View.GONE);
         }
         holder.mViewMedia.setOnClickListener(new View.OnClickListener() {
             @Override

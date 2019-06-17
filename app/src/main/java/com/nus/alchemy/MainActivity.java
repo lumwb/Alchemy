@@ -2,6 +2,7 @@
 
  import android.app.ProgressDialog;
  import android.content.Intent;
+ import android.graphics.Paint;
  import android.os.Bundle;
  import android.support.annotation.NonNull;
  import android.support.v7.app.AppCompatActivity;
@@ -95,10 +96,12 @@
 
      private void initAttributes() {
          registrationPageTextView = (TextView) findViewById(R.id.registrationPageTextView);
+         registrationPageTextView.setPaintFlags(registrationPageTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
          emailEditText = (EditText) findViewById(R.id.emailEditText);
          passwordEditText = (EditText) findViewById(R.id.passwordEditText);
          loginButton = (Button) findViewById(R.id.loginButton);
          forgotPasswordTextView = (TextView) findViewById(R.id.forgotPasswordTextView);
+         forgotPasswordTextView.setPaintFlags(forgotPasswordTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
          progressDialog = new ProgressDialog(this);
          firebaseAuth = FirebaseAuth.getInstance();
      }

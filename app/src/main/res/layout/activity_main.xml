@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/skybluebackground">
+    android:background="@drawable/gradient">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:layout_margin="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/alchemyround" />
@@ -21,11 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_centerVertical="true"
         android:layout_margin="10dp"
         android:ems="10"
         android:hint="Enter your email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:drawableLeft="@drawable/ic_email_pink_24dp"/>
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -36,16 +38,21 @@
         android:layout_margin="10dp"
         android:ems="10"
         android:hint="Enter your password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:drawableLeft="@drawable/ic_lock_pink_24dp"/>
 
     <Button
         android:id="@+id/loginButton"
+        android:background="#BF4387"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordEditText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Login" />
+        android:layout_marginTop="20dp"
+        android:ems="7"
+        android:text="Login"
+        android:textColor="#FFFFFF"
+        />
 
     <TextView
         android:id="@+id/registrationPageTextView"
@@ -60,9 +67,9 @@
         android:id="@+id/forgotPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginBottom="287dp"
+        android:layout_margin="15dp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/registrationPageTextView"
-        android:text="Forgot Your Password" />
+        android:text="Forgot Your Password?" />
 
 </RelativeLayout>

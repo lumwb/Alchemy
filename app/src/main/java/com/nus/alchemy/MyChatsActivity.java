@@ -35,13 +35,9 @@ public class MyChatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_chats);
         chatList = new ArrayList<>();
-//        ProgressDialog progressDialog = new ProgressDialog(this);
-//        progressDialog.setMessage("Loading Chats");
-//        progressDialog.show();
         setUpBottomNavBar();
         initRecyclerView();
         getUserChatList();
-//        progressDialog.hide();
     }
 
     private void getUserChatList() {
