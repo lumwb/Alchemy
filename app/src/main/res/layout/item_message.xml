@@ -6,13 +6,16 @@
     android:orientation="horizontal">
     
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_weight="0.9"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"/>
 
         <TextView
             android:id="@+id/sender"
@@ -27,8 +30,10 @@
     
     <Button
         android:id="@+id/viewMedia"
-        android:layout_width="wrap_content"
+        android:layout_weight="0.1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="View Media"/>
+        android:background="@drawable/ic_remove_red_eye_pink_24dp"
+        />
 
 </LinearLayout>
