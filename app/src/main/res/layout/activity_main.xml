@@ -14,7 +14,7 @@
         android:layout_margin="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/alchemyround" />
+        app:srcCompat="@drawable/icon" />
 
     <EditText
         android:id="@+id/emailEditText"
