@@ -7,21 +7,94 @@
     tools:context=".ProfileActivity"
     android:background="@drawable/gradient">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/skybluebackground"
+        app:civ_border_width="5dp"
+        android:layout_marginTop="15dp"
         android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="ProfilePage" />
+        app:civ_border_color="#FF000000"/>
+
+    <TextView
+        android:id="@+id/set_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_profile_image"
+        android:inputType="textMultiLine"
+        android:text="Username"
+        android:textAlignment="center"
+        android:drawableStart="@drawable/ic_account_circle_pink_24dp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/set_user_sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_user_name"
+        android:inputType="textMultiLine"
+        android:text="Sex"
+        android:textAlignment="center"
+        android:drawableStart="@drawable/ic_gender_pink_24dp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/set_user_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_user_sex"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:drawableStart="@drawable/ic_age_pink_24dp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/set_profile_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_user_age"
+        android:inputType="textMultiLine"
+        android:hint="What's Your Story?"
+        android:textAlignment="center"
+        android:drawableStart="@drawable/ic_library_books_pink_24dp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/update_settings_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/logoutTextView"
+        android:text="Update"
+        android:textAlignment="center"
+        android:background="#BF4387"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/logoutTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="149dp"
-        android:layout_marginTop="192dp"
+        android:layout_above="@id/bottomBar"
         android:layout_centerHorizontal="true"
         android:text="Logout" />
 
