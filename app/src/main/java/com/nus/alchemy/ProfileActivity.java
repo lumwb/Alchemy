@@ -80,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                  sex.setText(dataSnapshot.child("Sex").getValue().toString());
                  age.setText(dataSnapshot.child("Age").getValue().toString());
                  myStory.setText(dataSnapshot.child("Story").getValue().toString());
+                //userprofile image here
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

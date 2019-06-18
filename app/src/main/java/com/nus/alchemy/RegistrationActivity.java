@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText emailEditText;
@@ -110,9 +112,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void createUserDb(String userID, String name, String age, String sex) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(userID);
-        databaseReference.child("Name").setValue(name);
-        databaseReference.child("Age").setValue(age);
-        databaseReference.child("Sex").setValue(sex);
-        databaseReference.child("Story").setValue("");
+//        databaseReference.child("Name").setValue(name);
+//        databaseReference.child("Age").setValue(age);
+//        databaseReference.child("Sex").setValue(sex);
+//        databaseReference.child("Story").setValue("");
+        HashMap<String, String> profMap = new HashMap<>();
+        profMap.put("Name", name);
+        profMap.put("Age", age);
+        profMap.put("Sex", sex);
+        profMap.put("Story", "");
+        databaseReference.setValue(profMap);
     }
 }

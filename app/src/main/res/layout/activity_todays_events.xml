@@ -33,20 +33,30 @@
         android:id="@+id/myEventsBottomBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-        <RelativeLayout
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <android.support.design.widget.BottomNavigationView
-                android:id="@+id/bottomNavigationView"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:menu="@menu/bottom_nav_menu"
-                />
-        </RelativeLayout>
+        android:text="TextView" />
 
-    </FrameLayout>
+    <TextView
+        android:id="@+id/joinGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="temp JOIN GROUP CHAT"
+        android:layout_centerVertical="true"/>
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:menu="@menu/bottom_nav_menu"
+
+            />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

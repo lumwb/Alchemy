@@ -14,7 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
@@ -28,14 +32,21 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
 
     BottomNavigationView bottomNavigationView;
     TextView tempMatchTextView;
+    TextView tempGroupMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_events);
         setUpBottomNavBar();
+
+
         tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
         tempMatchTextView.setOnClickListener(this);
+        tempGroupMatch = (TextView) findViewById(R.id.createGrouptemp);
+        tempGroupMatch.setOnClickListener(this);
+
+
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -55,6 +66,26 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
             finish();
             return;
         }
+        if (v == tempGroupMatch) {
+            createNewGroup();
+        }
+    }
+
+    private void createNewGroup() {
+        String key = FirebaseDatabase.getInstance().getReference().child("Groups").push().getKey();
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(key).setValue(true);
+    }
+
+    private void CreateNewGroup(String groupName) {
+        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName).setValue("")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Created group successfully", Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
     }
 
     private void setUpBottomNavBar() {
