@@ -1,8 +1,11 @@
 package com.nus.alchemy;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +18,9 @@ import android.widget.TextView;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +42,7 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        EventAdapter eventAdapter = new EventAdapter(createList(30));
+        EventAdapter eventAdapter = new EventAdapter(createFakeList(30));
         recList.setAdapter(eventAdapter);
 
     }
@@ -82,15 +88,22 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
-    private List<EventObject> createList(int size) {
+
+    @TargetApi(26)
+    private List<EventObject> createFakeList(int size) {
 
         List<EventObject> result = new ArrayList<EventObject>();
         for (int i=1; i <= size; i++) {
             EventObject ci = new EventObject();
-            ci.name = EventObject.NAME_PREFIX + i;
-            ci.surname = EventObject.SURNAME_PREFIX + i;
-            ci.email = EventObject.EMAIL_PREFIX + i + "@test.com";
-
+            ci.name = "test name " + i;
+            ci.eventName = "test event " + i;
+            ci.startTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30);
+            if (i % 2 == 0)
+            {
+                ci.preferred_gender = "Male";
+            } else {
+                ci.preferred_gender = "Female";
+            }
             result.add(ci);
 
         }
