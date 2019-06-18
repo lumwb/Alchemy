@@ -13,6 +13,13 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
+    <TextView
+        android:id="@+id/joinGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="temp JOIN GROUP CHAT"
+        android:layout_centerVertical="true"/>
+
     <RelativeLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"

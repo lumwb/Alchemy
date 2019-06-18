@@ -7,16 +7,33 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-public class TodaysEventsActivity extends AppCompatActivity {
+public class TodaysEventsActivity extends AppCompatActivity implements View.OnClickListener {
 
     BottomNavigationView bottomNavigationView;
+    TextView tempJoinGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todays_events);
         setUpBottomNavBar();
+        tempJoinGroup = (TextView) findViewById(R.id.joinGroup);
+        tempJoinGroup.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == tempJoinGroup) {
+            //get the td of the chat from the card
+            String tempChatName = "Lhf5YQ1MKxhXIUshs3I";
+            Intent intent = new Intent(getApplicationContext(), GroupChatActivity.class);
+            intent.putExtra("groupName", tempChatName);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void setUpBottomNavBar() {
