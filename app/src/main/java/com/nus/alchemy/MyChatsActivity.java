@@ -47,7 +47,7 @@ public class MyChatsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        ChatObject chatObject = new ChatObject(childSnapshot.getKey());
+                        ChatObject chatObject = new ChatObject(childSnapshot.getKey(), childSnapshot.getValue().toString());
                         boolean exists = false;
                         for (ChatObject mChatIterator : chatList) {
                             if (mChatIterator.getChatID().equals(chatObject.getChatID())) {
