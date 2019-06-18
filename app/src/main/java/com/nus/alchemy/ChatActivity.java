@@ -66,7 +66,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             String messageID = mChatDb.push().getKey();
             final DatabaseReference newMessageDb = mChatDb.child(messageID);
             final Map newMessageMap = new HashMap<>();
-            newMessageMap.put("creator", FirebaseAuth.getInstance().getUid());
+            String creatorID = FirebaseAuth.getInstance().getUid();
+            newMessageMap.put("creator", creatorID);
+//            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(creatorID);
+//            ref.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    creatorName = dataSnapshot.child("Name").getValue().toString();
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                }
+//            });
+//            newMessageMap.put("creatorName", creatorName);
             if (!mMessage.getText().toString().isEmpty()) {
                 newMessageMap.put("text", mMessage.getText().toString());
             }
@@ -186,7 +198,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             mediaUrlList.add(mediaSnapShot.getValue().toString());
                         }
                     }
-                    MessageObject myMessage = new MessageObject(creatorID ,dataSnapshot.getKey(),text, mediaUrlList);
+                    MessageObject myMessage = new MessageObject(creatorID, dataSnapshot.getKey(),text, mediaUrlList);
                     messageList.add(myMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size() - 1);
                     mChatAdapter.notifyDataSetChanged();

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity">
+    tools:context=".ChatActivity"
+    android:background="@drawable/gradient">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messageList"
@@ -39,17 +40,19 @@
 
             <Button
                 android:id="@+id/addMedia"
-                android:layout_weight="0.2"
+                android:layout_weight="0.1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Add media"/>
+                android:background="@drawable/ic_attach_file_pink_24dp"
+                />
 
             <Button
                 android:id="@+id/send"
-                android:layout_weight="0.2"
+                android:layout_weight="0.1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Send"/>
+                android:background="@drawable/ic_send_pink_24dp"
+                />
 
         </LinearLayout>
 

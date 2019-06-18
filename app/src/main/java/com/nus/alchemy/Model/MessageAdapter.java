@@ -2,6 +2,7 @@ package com.nus.alchemy.Model;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.R;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
@@ -17,7 +24,6 @@ import java.util.ArrayList;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     ArrayList<MessageObject> messageList;
-    //boolean showMediaButton;
 
     public MessageAdapter(ArrayList<MessageObject> messageList) {
         this.messageList = messageList;
@@ -32,11 +38,28 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         MessageViewHolder mvh = new MessageViewHolder(layoutView);
         return mvh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
+        final String senderID = messageList.get(position).getSenderID();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(senderID);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String creatorName = dataSnapshot.child("Name").getValue().toString();
+                if (senderID.equals(FirebaseAuth.getInstance().getUid())) {
+                    holder.mSender.setGravity(Gravity.RIGHT | Gravity.END);
+                }
+                else {
+                    holder.mSender.setGravity(Gravity.LEFT | Gravity.START);
+                }
+                holder.mSender.setText(creatorName);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         holder.mMessage.setText(messageList.get(position).getMessage());
-        holder.mSender.setText(messageList.get(position).getSenderID());
 
         if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
             holder.mViewMedia.setText(null); //this is not okay
