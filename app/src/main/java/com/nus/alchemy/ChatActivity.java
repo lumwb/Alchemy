@@ -1,5 +1,6 @@
 package com.nus.alchemy;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView.LayoutManager mMediaLayoutManager;
     private Button mSend;
     private Button mAddMedia;
+    private ProgressDialog progressDialog;
     EditText mMessage;
     ArrayList<MessageObject> messageList;
     String chatID;
@@ -84,6 +86,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             if (!mediaURIList.isEmpty()) {
+
                 uploadMediaToStorage(messageID, newMessageDb, newMessageMap);
             } else {
                 if (!mMessage.getText().toString().isEmpty()) {
@@ -166,6 +169,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         mMessage = (EditText) findViewById(R.id.messageInput);
         chatID = getIntent().getExtras().getString("chatID");
         mChatDb = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatID);
+        progressDialog = new ProgressDialog(this);
     }
 
     private void initMedia() {

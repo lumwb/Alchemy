@@ -84,7 +84,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         progressDialog.setMessage("Registering...");
         progressDialog.show();
         createAccount(email, password, name, age, sex);
-        progressDialog.hide();
     }
 
     private void createAccount(String email, String password, final String name, final String age, final String sex) {
@@ -93,6 +92,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            progressDialog.dismiss();
                             String userID = firebaseAuth.getCurrentUser().getUid();
                             createUserDb(userID, name, age, sex);
                             Intent goToAboutPage = new Intent(getApplicationContext(), ProfileActivity.class);
@@ -106,11 +106,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 });
     }
 
+    //check here
     private void createUserDb(String userID, String name, String age, String sex) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(userID);
         databaseReference.child("Name").setValue(name);
         databaseReference.child("Age").setValue(age);
         databaseReference.child("Sex").setValue(sex);
+        databaseReference.child("Story").setValue("");
     }
 }

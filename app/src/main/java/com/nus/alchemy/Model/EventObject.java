@@ -8,4 +8,5 @@ public class EventObject {
     public String name;
     public String preferred_gender;
     public LocalDateTime startTime;
+    private String chatID;
 }

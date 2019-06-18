@@ -4,36 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyEventsActivity">
+    tools:context=".MyEventsActivity"
+    android:background="@drawable/gradient">
 
-    <TextView
-        android:id="@+id/tempMatchTextView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="go to match temp"/>
 
+    <FrameLayout
+        android:id="@+id/matchtemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tempMatchTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="go to match temp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/myEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/myEventsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:text="My Events"
+            android:textSize="40dp"
+            android:drawableLeft="@drawable/ic_todays_event_30dp"
+            />
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/myEvents"
+        android:layout_above="@+id/myEventsBottomBar"
         />
 
-    <RelativeLayout
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <FrameLayout
+        android:id="@+id/myEventsBottomBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
+        <RelativeLayout
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:menu="@menu/bottom_nav_menu"
-            />
+            android:layout_height="50dp">
+            <android.support.design.widget.BottomNavigationView
+                android:id="@+id/bottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:menu="@menu/bottom_nav_menu"
+                />
+        </RelativeLayout>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </RelativeLayout>
