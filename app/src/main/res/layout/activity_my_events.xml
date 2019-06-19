@@ -8,7 +8,6 @@
     android:background="@drawable/gradient">
 
 
-
     <FrameLayout
         android:id="@+id/matchtemp"
         android:layout_width="wrap_content"
@@ -35,12 +34,28 @@
         </LinearLayout>
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/myEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/myEventsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:text="My Events"
+            android:textSize="40dp"
+            android:drawableLeft="@drawable/ic_todays_event_30dp"
+            />
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/matchtemp"
+        android:layout_below="@+id/myEvents"
         android:layout_above="@+id/myEventsBottomBar"
         />
 
