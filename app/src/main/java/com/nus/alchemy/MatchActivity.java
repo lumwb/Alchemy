@@ -13,6 +13,7 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
 
     Button sendTextButton;
     Button closeButton;
+    String otherUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,8 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
             String myID = FirebaseAuth.getInstance().getUid();
             FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(otherUserID);
             FirebaseDatabase.getInstance().getReference().child("Users").child(otherUserID).child("chat").child(key).setValue(myID);
-            //should pass the name of the other user into the chatObject for mTitle
-
             Intent goToMyChats = new Intent(getApplicationContext(), MyChatsActivity.class);
+
             startActivity(goToMyChats);
             finish();
         }
