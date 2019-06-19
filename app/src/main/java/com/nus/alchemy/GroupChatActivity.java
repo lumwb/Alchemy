@@ -2,6 +2,7 @@ package com.nus.alchemy;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class GroupChatActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,7 +50,37 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         currentGroupName = getIntent().getExtras().get("groupName").toString();
         initAttributes();
         getUserInfo();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        groupNameRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()) {
+                    DisplayMessages(dataSnapshot);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()) {
+                    DisplayMessages(dataSnapshot);
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
@@ -78,6 +111,18 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
                 groupMessageKeyRef.updateChildren(messageInfoMap);
                 userMessageInput.setText("");
             }
+        }
+    }
+
+    private void DisplayMessages(DataSnapshot dataSnapshot) {
+        Iterator iterator = dataSnapshot.getChildren().iterator();
+        while (iterator.hasNext()) {
+//            DataSnapshot snap = (DataSnapshot) iterator.next();
+            String chatDate = ((DataSnapshot) iterator.next()).getValue().toString();
+            String chatMessage = ((DataSnapshot) iterator.next()).getValue().toString();
+            String chatName = ((DataSnapshot) iterator.next()).getValue().toString();
+            String chatTime = ((DataSnapshot) iterator.next()).getValue().toString();
+            displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n");
         }
     }
 
