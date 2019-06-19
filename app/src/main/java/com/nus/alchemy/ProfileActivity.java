@@ -1,8 +1,10 @@
 package com.nus.alchemy;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -11,13 +13,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,12 +42,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     TextView logoutTextView;
     CircleImageView userProfileImage;
     BottomNavigationView bottomNavigationView;
+    private static final int GalleryPick = 1;
+    private StorageReference userProfileImagesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         firebaseAuth = FirebaseAuth.getInstance();
+        userProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
         username = (TextView) findViewById(R.id.set_user_name);
         age = (TextView) findViewById(R.id.set_user_age);
         sex = (TextView) findViewById(R.id.set_user_sex);
@@ -48,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutTextView = (TextView) findViewById(R.id.logoutTextView);
         logoutTextView.setOnClickListener(this);
         userProfileImage = (CircleImageView) findViewById(R.id.user_profile_image);
+        userProfileImage.setOnClickListener(this);
 
         initUserProfile();
         setUpBottomNavBar();
@@ -67,6 +81,40 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (v == updateSettings) {
             updateUserSettings();
+        }
+        if (v == userProfileImage) {
+            Intent galleryIntent = new Intent();
+            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent, GalleryPick);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GalleryPick && resultCode == RESULT_OK && data != null) {
+            Uri ImageUri = data.getData();
+            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                StorageReference filePath = userProfileImagesRef.child(FirebaseAuth.getInstance().getUid() + ".jpg");
+                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(),"Profile Image uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            String message = task.getException().toString();
+                            Toast.makeText(getApplicationContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
         }
     }
 

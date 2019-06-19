@@ -110,6 +110,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
                 messageInfoMap.put("time", currentTime);
                 groupMessageKeyRef.updateChildren(messageInfoMap);
                 userMessageInput.setText("");
+                mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         }
     }
@@ -117,12 +118,12 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private void DisplayMessages(DataSnapshot dataSnapshot) {
         Iterator iterator = dataSnapshot.getChildren().iterator();
         while (iterator.hasNext()) {
-//            DataSnapshot snap = (DataSnapshot) iterator.next();
             String chatDate = ((DataSnapshot) iterator.next()).getValue().toString();
             String chatMessage = ((DataSnapshot) iterator.next()).getValue().toString();
             String chatName = ((DataSnapshot) iterator.next()).getValue().toString();
             String chatTime = ((DataSnapshot) iterator.next()).getValue().toString();
             displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n");
+            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }
 
