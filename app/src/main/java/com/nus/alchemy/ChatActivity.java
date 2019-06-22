@@ -70,23 +70,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             final Map newMessageMap = new HashMap<>();
             String creatorID = FirebaseAuth.getInstance().getUid();
             newMessageMap.put("creator", creatorID);
-//            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(creatorID);
-//            ref.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    creatorName = dataSnapshot.child("Name").getValue().toString();
-//                }
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//                }
-//            });
-//            newMessageMap.put("creatorName", creatorName);
             if (!mMessage.getText().toString().isEmpty()) {
                 newMessageMap.put("text", mMessage.getText().toString());
             }
 
             if (!mediaURIList.isEmpty()) {
-
                 uploadMediaToStorage(messageID, newMessageDb, newMessageMap);
             } else {
                 if (!mMessage.getText().toString().isEmpty()) {

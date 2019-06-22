@@ -112,11 +112,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void createUserDb(String userID, String name, String age, String sex) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(userID);
-//        databaseReference.child("Name").setValue(name);
-//        databaseReference.child("Age").setValue(age);
-//        databaseReference.child("Sex").setValue(sex);
-//        databaseReference.child("Story").setValue("");
-        HashMap<String, String> profMap = new HashMap<>();
+        HashMap<String, Object> profMap = new HashMap<>();
         profMap.put("Name", name);
         profMap.put("Age", age);
         profMap.put("Sex", sex);
