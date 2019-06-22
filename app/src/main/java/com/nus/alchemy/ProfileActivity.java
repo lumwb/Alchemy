@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -34,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth firebaseAuth;
+    DatabaseReference RootRef;
     TextView username;
     TextView sex;
     TextView age;
@@ -41,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     Button updateSettings;
     TextView logoutTextView;
     CircleImageView userProfileImage;
+    private String currentUserID;
     BottomNavigationView bottomNavigationView;
     private static final int GalleryPick = 1;
     private StorageReference userProfileImagesRef;
@@ -62,7 +66,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutTextView.setOnClickListener(this);
         userProfileImage = (CircleImageView) findViewById(R.id.user_profile_image);
         userProfileImage.setOnClickListener(this);
-
+        currentUserID = firebaseAuth.getCurrentUser().getUid().toString();
+        RootRef = FirebaseDatabase.getInstance().getReference();
         initUserProfile();
         setUpBottomNavBar();
 
@@ -102,21 +107,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                StorageReference filePath = userProfileImagesRef.child(FirebaseAuth.getInstance().getUid() + ".jpg");
-                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                final StorageReference filePath = userProfileImagesRef.child(FirebaseAuth.getInstance().getUid() + ".jpg");
+                filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),"Profile Image uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            String message = task.getException().toString();
-                            Toast.makeText(getApplicationContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        setPhoto(filePath);
                     }
                 });
             }
         }
+    }
+
+    private void setPhoto(StorageReference filePath) {
+        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                final String downloadUrl = uri.toString();
+                RootRef.child("Users").child(currentUserID).child("Image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Successful", Toast.LENGTH_SHORT).show();
+                            //dismiss pd
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Error occured...", Toast.LENGTH_SHORT).show();
+                            //dismiss pd
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
     private void initUserProfile() {
@@ -125,11 +147,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 username.setText(dataSnapshot.child("Name").getValue().toString());
-                 sex.setText(dataSnapshot.child("Sex").getValue().toString());
-                 age.setText(dataSnapshot.child("Age").getValue().toString());
-                 myStory.setText(dataSnapshot.child("Story").getValue().toString());
-                //userprofile image here
+                 if (dataSnapshot.exists()) {
+                     username.setText(dataSnapshot.child("Name").getValue().toString());
+                     sex.setText(dataSnapshot.child("Sex").getValue().toString());
+                     age.setText(dataSnapshot.child("Age").getValue().toString());
+                     myStory.setText(dataSnapshot.child("Story").getValue().toString());
+                 }
+                 if (dataSnapshot.hasChild("Image")) {
+                     String profImg = dataSnapshot.child("Image").getValue().toString();
+                     Picasso.get().load(profImg).into(userProfileImage);
+                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
