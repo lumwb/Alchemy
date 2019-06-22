@@ -86,7 +86,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Intent galleryIntent = new Intent();
             galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent, GalleryPick);
+            //startActivityForResult(galleryIntent, GalleryPick);
+            startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), GalleryPick);
         }
     }
 
