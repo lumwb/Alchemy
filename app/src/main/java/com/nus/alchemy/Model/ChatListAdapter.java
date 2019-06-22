@@ -36,8 +36,8 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     @Override
     public void onBindViewHolder(@NonNull final ChatListViewHolder holder, final int position) {
         //here we want the chatobject at that position to have an attribute storing names
-        holder.mTitle.setText(chatList.get(position).getChatID());
-        //holder.mTitle.setText(chatList.get(position).getOtherUserName());
+        //holder.mTitle.setText(chatList.get(position).getChatID());
+        holder.mTitle.setText(chatList.get(position).getOtherUserName());
 
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override

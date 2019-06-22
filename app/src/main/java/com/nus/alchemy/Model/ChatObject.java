@@ -7,9 +7,10 @@ public class ChatObject {
     String otherUserID;
     String otherUserName;
 
-    public ChatObject(String chatID, String otherUserID) {
+    public ChatObject(String chatID, String otherUserID, String otherUserName) {
         this.chatID = chatID;
         this.otherUserID = otherUserID;
+        this.otherUserName = otherUserName;
     }
 
     public String getChatID() { return chatID; }
@@ -18,22 +19,5 @@ public class ChatObject {
         return otherUserID;
     }
 
-//    public String getOtherUserName() {
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(otherUserID);
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    otherUserName = dataSnapshot.child("Name").getValue().toString();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//        ref.child("Helper").setValue(false);
-//        ref.child("Helper").setValue(true);
-//        return otherUserName;
-//    }
-
+    public String getOtherUserName() {return otherUserName; }
 }

@@ -36,7 +36,6 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
             FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(otherUserID);
             FirebaseDatabase.getInstance().getReference().child("Users").child(otherUserID).child("chat").child(key).setValue(myID);
             Intent goToMyChats = new Intent(getApplicationContext(), MyChatsActivity.class);
-
             startActivity(goToMyChats);
             finish();
         }
