@@ -13,11 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
@@ -33,6 +35,8 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
     BottomNavigationView bottomNavigationView;
     TextView tempMatchTextView;
     TextView tempGroupMatch;
+    private Button newEventButton;
+    DatabaseReference eventDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         tempMatchTextView.setOnClickListener(this);
         tempGroupMatch = (TextView) findViewById(R.id.createGrouptemp);
         tempGroupMatch.setOnClickListener(this);
+        newEventButton = (Button) findViewById(R.id.newEventButton);
 
 
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
@@ -55,6 +60,8 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
 
         EventAdapter eventAdapter = new EventAdapter(createFakeList(30));
         recList.setAdapter(eventAdapter);
+
+        this.eventDB = FirebaseDatabase.getInstance().getReference().child("user-event");
 
     }
 
@@ -69,7 +76,15 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         if (v == tempGroupMatch) {
             createNewGroup();
         }
+        if (v == newEventButton) {
+            //redirect to createEventPage
+            Intent goToCreateEventPage = new Intent(getApplicationContext(), CreateEventActivity.class);
+            finish();
+            startActivity(goToCreateEventPage);
+            return;
+        }
     }
+
 
     private void createNewGroup() {
         String key = FirebaseDatabase.getInstance().getReference().child("Groups").push().getKey();

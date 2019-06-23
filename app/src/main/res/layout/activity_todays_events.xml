@@ -20,20 +20,32 @@
             android:text="go to match temp"/>
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/myEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/matchtemp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+        <TextView
+            android:id="@+id/myEventsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text=" Today's Events"
+            android:textSize="40dp"
+            android:drawableLeft="@drawable/ic_todays_event_30dp"
+            />
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/matchtemp"
+        android:layout_below="@+id/myEvents"
         android:layout_above="@+id/myEventsBottomBar"
         />
 
-    <FrameLayout
-        android:id="@+id/myEventsBottomBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/joinGroup"

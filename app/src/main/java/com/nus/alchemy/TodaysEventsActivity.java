@@ -1,6 +1,7 @@
 package com.nus.alchemy;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 import android.view.View;
@@ -28,9 +33,15 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
     BottomNavigationView bottomNavigationView;
     TextView tempMatchTextView;
     TextView tempJoinGroup;
+    DatabaseReference eventDb;
+
+    private void initAttributes() {
+        eventDb = FirebaseDatabase.getInstance().getReference();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.initAttributes();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todays_events);
         setUpBottomNavBar();
@@ -93,6 +104,7 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    //Method to create fake events
     @TargetApi(26)
     private List<EventObject> createFakeEventList(int size) {
 
