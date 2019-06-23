@@ -55,7 +55,10 @@ public class MyChatsActivity extends AppCompatActivity {
                     for (DataSnapshot chats : dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("chat").getChildren()) {
                         String otherUserID = chats.getValue().toString();
                         String otherUserName = dataSnapshot.child(otherUserID).child("Name").getValue().toString();
-                        String otherUserProfImg = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
+                        String otherUserProfImg = "";
+                        if (dataSnapshot.child(otherUserID).hasChild("Image")) {
+                            otherUserProfImg = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
+                        }
                         ChatObject chatObject = new ChatObject(chats.getKey(), chats.getValue().toString(), otherUserName, otherUserProfImg);
                         boolean exists = false;
                         for (ChatObject mChatIterator : chatList) {
