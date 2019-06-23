@@ -39,7 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return mvh;
     }
     @Override
-    public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder holder, final int position) {
         final String senderID = messageList.get(position).getSenderID();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(senderID);
         ref.addValueEventListener(new ValueEventListener() {
@@ -53,6 +53,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     holder.mSender.setGravity(Gravity.LEFT | Gravity.START);
                 }
                 holder.mSender.setText(creatorName);
+//
+//                holder.mMessage.setText(messageList.get(position).getMessage());
+//
+//                if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
+//                    //holder.mViewMedia.setText(null); //this is not okay
+//                    holder.mViewMedia.setVisibility(View.GONE);
+//                }
+//                holder.mViewMedia.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        new ImageViewer.Builder(v.getContext(), messageList.get(holder.getAdapterPosition()).getMediaUrlList())
+//                                .setStartPosition(0)
+//                                .show();
+//                    }
+//                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
