@@ -70,8 +70,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         RootRef = FirebaseDatabase.getInstance().getReference();
         initUserProfile();
         setUpBottomNavBar();
-
-
     }
 
     @Override

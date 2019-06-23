@@ -37,25 +37,34 @@
     <FrameLayout
         android:id="@+id/myEvents"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/matchtemp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
         <TextView
             android:id="@+id/myEventsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="20dp"
-            android:text="My Events"
-            android:textSize="40dp"
+            android:layout_margin="5dp"
+            android:text=" My Events"
+            android:textSize="40sp"
             android:drawableLeft="@drawable/ic_todays_event_30dp"
             />
     </FrameLayout>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/newEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myEvents"
+        android:layout_centerHorizontal="true"
+        android:text="new event"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/myEvents"
+        android:layout_below="@+id/newEventButton"
         android:layout_above="@+id/myEventsBottomBar"
         />
 
