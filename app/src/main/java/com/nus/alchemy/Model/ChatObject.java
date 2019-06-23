@@ -3,7 +3,6 @@ package com.nus.alchemy.Model;
 public class ChatObject {
 
     String chatID;
-    String title;
     String otherUserID;
     String otherUserName;
 

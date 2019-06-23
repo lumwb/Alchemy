@@ -9,10 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView mChat;
@@ -44,6 +48,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private Button mSend;
     private Button mAddMedia;
     private ProgressDialog progressDialog;
+    private CircleImageView userImage;
+    private TextView userName;
+    private Toolbar chatToolbar;
     EditText mMessage;
     ArrayList<MessageObject> messageList;
     String chatID;
@@ -157,7 +164,16 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         mMessage = (EditText) findViewById(R.id.messageInput);
         chatID = getIntent().getExtras().getString("chatID");
         mChatDb = FirebaseDatabase.getInstance().getReference().child("Chats").child(chatID);
+        userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
+        userName = (TextView) findViewById(R.id.custom_profile_name);
         progressDialog = new ProgressDialog(this);
+        chatToolbar = (Toolbar) findViewById(R.id.chat_bar_layout);
+        setSupportActionBar(chatToolbar);
+        getSupportActionBar().setTitle("");
+        TextView custom_name = findViewById(R.id.custom_profile_name);
+        custom_name.setText("Hello World");
+
+        //Picasso.get().load(stringIMage).into(view.profileImage)
     }
 
     private void initMedia() {

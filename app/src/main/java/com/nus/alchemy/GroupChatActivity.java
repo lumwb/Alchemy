@@ -147,7 +147,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(currentGroupName);
         SendMessageButton = (ImageButton) findViewById(R.id.send_message_button);
-        SendMessageButton.setOnClickListener(this   );
+        SendMessageButton.setOnClickListener(this);
         userMessageInput = (EditText) findViewById(R.id.input_group_message);
         displayTextMessages = (TextView) findViewById(R.id.group_chat_text_display);
         mScrollView = (ScrollView) findViewById(R.id.my_scroll_view);

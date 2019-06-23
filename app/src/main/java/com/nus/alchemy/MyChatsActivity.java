@@ -41,34 +41,6 @@ public class MyChatsActivity extends AppCompatActivity {
     }
 
     private void getUserChatList() {
-//        DatabaseReference mUserChatDb = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("chat");
-//        mUserChatDb.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-//                        //childSnapshot refers to
-//                        ChatObject chatObject = new ChatObject(childSnapshot.getKey(), childSnapshot.getValue().toString());
-//                        boolean exists = false;
-//                        for (ChatObject mChatIterator : chatList) {
-//                            if (mChatIterator.getChatID().equals(chatObject.getChatID())) {
-//                                exists = true;
-//                            }
-//                        }
-//                        if (exists) {
-//                            continue;
-//                        }
-//                        chatList.add(chatObject);
-//                        mChatListAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
