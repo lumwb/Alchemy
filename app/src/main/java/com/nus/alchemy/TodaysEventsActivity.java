@@ -20,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
-import android.view.View;
-import android.widget.TextView;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -62,7 +60,7 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        if (v == tempMatchTextView) {
+        if (v == tempJoinGroup) {
             //get the td of the chat from the card
             String tempChatName = "Lhf5YQ1MKxhXIUshs3I";
             Intent intent = new Intent(getApplicationContext(), GroupChatActivity.class);

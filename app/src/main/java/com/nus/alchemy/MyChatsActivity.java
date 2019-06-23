@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.nus.alchemy.Model.ChatListAdapter;
 import com.nus.alchemy.Model.ChatObject;
 
@@ -29,25 +31,32 @@ public class MyChatsActivity extends AppCompatActivity {
     private RecyclerView.Adapter mChatListAdapter;
     private RecyclerView.LayoutManager mChatListLayoutManager;
     ArrayList<ChatObject> chatList;
+    private StorageReference userProfileImagesRef;
+    private String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_chats);
         chatList = new ArrayList<>();
+        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
         setUpBottomNavBar();
         initRecyclerView();
         getUserChatList();
     }
 
     private void getUserChatList() {
-        DatabaseReference mUserChatDb = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("chat");
-        mUserChatDb.addValueEventListener(new ValueEventListener() {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        ChatObject chatObject = new ChatObject(childSnapshot.getKey());
+                    for (DataSnapshot chats : dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("chat").getChildren()) {
+                        String otherUserID = chats.getValue().toString();
+                        String otherUserName = dataSnapshot.child(otherUserID).child("Name").getValue().toString();
+                        String otherUserProfImg = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
+                        ChatObject chatObject = new ChatObject(chats.getKey(), chats.getValue().toString(), otherUserName, otherUserProfImg);
                         boolean exists = false;
                         for (ChatObject mChatIterator : chatList) {
                             if (mChatIterator.getChatID().equals(chatObject.getChatID())) {
@@ -62,10 +71,8 @@ public class MyChatsActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }

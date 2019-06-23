@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
 
-    ArrayList<ChatObject> chatList;
+    private ArrayList<ChatObject> chatList;
 
     public ChatListAdapter(ArrayList<ChatObject> chatList) {
         this.chatList = chatList;
@@ -35,14 +35,18 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     @Override
     public void onBindViewHolder(@NonNull final ChatListViewHolder holder, final int position) {
-        holder.mTitle.setText(chatList.get(position).getChatID());
+        final String otherUserName = chatList.get(position).getOtherUserName();
+        final String otherUserProfImg = chatList.get(position).getOtherUserProfileImage();
 
+        holder.mTitle.setText(otherUserName);
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ChatActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("chatID", chatList.get(holder.getAdapterPosition()).getChatID());
+                bundle.putString("otherUserName", otherUserName);
+                bundle.putString("otherUserProfileImg", otherUserProfImg);
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
             }
