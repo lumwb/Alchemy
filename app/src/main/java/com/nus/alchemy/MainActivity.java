@@ -26,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
     private EditText passwordEditText;
     private Button loginButton;
     private TextView forgotPasswordTextView;
-    //private Toolbar mToolbar;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
 

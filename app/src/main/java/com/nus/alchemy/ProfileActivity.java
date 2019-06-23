@@ -143,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initUserProfile() {
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getUid());
-        boolean helper = true;
+        //boolean helper = true;
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -163,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        ref.child("Helper").setValue(helper);
+        //ref.child("Helper").setValue(helper);
     }
 
     private void updateUserSettings() {

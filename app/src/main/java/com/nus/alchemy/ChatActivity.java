@@ -30,6 +30,7 @@ import com.google.firebase.storage.UploadTask;
 import com.nus.alchemy.Model.MediaAdapter;
 import com.nus.alchemy.Model.MessageAdapter;
 import com.nus.alchemy.Model.MessageObject;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,10 +52,17 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private CircleImageView userImage;
     private TextView userName;
     private Toolbar chatToolbar;
-    EditText mMessage;
-    ArrayList<MessageObject> messageList;
-    String chatID;
-    DatabaseReference mChatDb;
+    private EditText mMessage;
+    private ArrayList<MessageObject> messageList;
+    private String chatID;
+    private DatabaseReference mChatDb;
+    private String currentUserID;
+    private CircleImageView chatProfPic;
+
+    int totalMediaUploaded = 0;
+    ArrayList<String> mediaIdList = new ArrayList<>();
+    int PICK_IMAGE_INTENT = 1;
+    ArrayList<String> mediaURIList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,35 +74,35 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         initMedia();
         getChatMessages();
     }
-    int totalMediaUploaded = 0;
-    ArrayList<String> mediaIdList = new ArrayList<>();
 
     @Override
     public void onClick(View v) {
         if (v == mSend) {
-            String messageID = mChatDb.push().getKey();
-            final DatabaseReference newMessageDb = mChatDb.child(messageID);
-            final Map newMessageMap = new HashMap<>();
-            String creatorID = FirebaseAuth.getInstance().getUid();
-            newMessageMap.put("creator", creatorID);
-            if (!mMessage.getText().toString().isEmpty()) {
-                newMessageMap.put("text", mMessage.getText().toString());
-            }
-
-            if (!mediaURIList.isEmpty()) {
-                uploadMediaToStorage(messageID, newMessageDb, newMessageMap);
-            } else {
-                if (!mMessage.getText().toString().isEmpty()) {
-                     updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
-                }
-            }
-
+            sendMessageAndMedia();
         }
-
         if (v == mAddMedia) {
             openGallery();
         }
     }
+
+    private void sendMessageAndMedia() {
+        String messageID = mChatDb.push().getKey();
+        final DatabaseReference newMessageDb = mChatDb.child(messageID);
+        final Map newMessageMap = new HashMap<>();
+        String creatorID = currentUserID;
+        newMessageMap.put("creator", creatorID);
+        if (!mMessage.getText().toString().isEmpty()) {
+            newMessageMap.put("text", mMessage.getText().toString());
+        }
+        if (!mediaURIList.isEmpty()) {
+            uploadMediaToStorage(messageID, newMessageDb, newMessageMap);
+        } else {
+            if (!mMessage.getText().toString().isEmpty()) {
+                updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
+            }
+        }
+    }
+
 
     private void uploadMediaToStorage(String messageID, final DatabaseReference newMessageDb, final Map newMessageMap) {
         for (String mediaURI : mediaURIList) {
@@ -129,8 +137,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         mMediaAdapter.notifyDataSetChanged();
     }
 
-    int PICK_IMAGE_INTENT = 1;
-    ArrayList<String> mediaURIList = new ArrayList<>();
     private void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -167,13 +173,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
         userName = (TextView) findViewById(R.id.custom_profile_name);
         progressDialog = new ProgressDialog(this);
+        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         chatToolbar = (Toolbar) findViewById(R.id.chat_bar_layout);
         setSupportActionBar(chatToolbar);
         getSupportActionBar().setTitle("");
         TextView custom_name = findViewById(R.id.custom_profile_name);
-        custom_name.setText("Hello World");
-
-        //Picasso.get().load(stringIMage).into(view.profileImage)
+        custom_name.setText(getIntent().getExtras().getString("otherUserName"));
+        chatProfPic = (CircleImageView) findViewById(R.id.custom_profile_image);
+        String otherUserProfImg = getIntent().getExtras().getString("otherUserProfileImg");
+        Picasso.get().load(otherUserProfImg).into(chatProfPic);
     }
 
     private void initMedia() {
@@ -206,7 +214,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             mediaUrlList.add(mediaSnapShot.getValue().toString());
                         }
                     }
-                    MessageObject myMessage = new MessageObject(creatorID, dataSnapshot.getKey(),text, mediaUrlList);
+                    MessageObject myMessage = new MessageObject(creatorID, dataSnapshot.getKey(), text, mediaUrlList);
                     messageList.add(myMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size() - 1);
                     mChatAdapter.notifyDataSetChanged();

@@ -44,10 +44,9 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         return mediaList.size();
     }
 
+
     public class MediaViewHolder extends RecyclerView.ViewHolder {
-
         ImageView mMedia;
-
         public MediaViewHolder(View itemview) {
             super(itemview);
             mMedia = itemview.findViewById(R.id.mediaImage);

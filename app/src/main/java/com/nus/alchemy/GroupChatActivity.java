@@ -86,34 +86,39 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v == SendMessageButton) {
-            String message = userMessageInput.getText().toString();
-            String messageKey = groupNameRef.push().getKey();
-            if (TextUtils.isEmpty(message)) {
-                return;
-            }
-            else {
-                Calendar calForDate = Calendar.getInstance();
-                SimpleDateFormat currentDateFormat = new SimpleDateFormat("MMM dd, yyyy");
-                currentDate = currentDateFormat.format(calForDate.getTime());
-
-                Calendar calForTime = Calendar.getInstance();
-                SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm a");
-                currentTime = currentTimeFormat.format(calForTime.getTime());
-
-                HashMap<String,Object> groupMessageKey = new HashMap<>();
-                groupNameRef.updateChildren(groupMessageKey);
-                groupMessageKeyRef = groupNameRef.child(messageKey);
-                HashMap<String, Object> messageInfoMap = new HashMap<>();
-                messageInfoMap.put("name", currentUserName);
-                messageInfoMap.put("message", message);
-                messageInfoMap.put("date",currentDate);
-                messageInfoMap.put("time", currentTime);
-                groupMessageKeyRef.updateChildren(messageInfoMap);
-                userMessageInput.setText("");
-                mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            }
+            sendMessage();
         }
     }
+
+    private void sendMessage() {
+        String message = userMessageInput.getText().toString();
+        String messageKey = groupNameRef.push().getKey();
+        if (TextUtils.isEmpty(message)) {
+            return;
+        }
+        else {
+            Calendar calForDate = Calendar.getInstance();
+            SimpleDateFormat currentDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+            currentDate = currentDateFormat.format(calForDate.getTime());
+
+            Calendar calForTime = Calendar.getInstance();
+            SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm a");
+            currentTime = currentTimeFormat.format(calForTime.getTime());
+
+            HashMap<String,Object> groupMessageKey = new HashMap<>();
+            groupNameRef.updateChildren(groupMessageKey);
+            groupMessageKeyRef = groupNameRef.child(messageKey);
+            HashMap<String, Object> messageInfoMap = new HashMap<>();
+            messageInfoMap.put("name", currentUserName);
+            messageInfoMap.put("message", message);
+            messageInfoMap.put("date",currentDate);
+            messageInfoMap.put("time", currentTime);
+            groupMessageKeyRef.updateChildren(messageInfoMap);
+            userMessageInput.setText("");
+            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+        }
+    }
+
 
     private void DisplayMessages(DataSnapshot dataSnapshot) {
         Iterator iterator = dataSnapshot.getChildren().iterator();
@@ -122,7 +127,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             String chatMessage = ((DataSnapshot) iterator.next()).getValue().toString();
             String chatName = ((DataSnapshot) iterator.next()).getValue().toString();
             String chatTime = ((DataSnapshot) iterator.next()).getValue().toString();
-            displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n");
+            displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n\n");
             mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }

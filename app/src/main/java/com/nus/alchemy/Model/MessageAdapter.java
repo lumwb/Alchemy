@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -63,7 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.mMessage.setText(messageList.get(position).getMessage());
 
         if (messageList.get(holder.getAdapterPosition()).getMediaUrlList().isEmpty()) {
-            holder.mViewMedia.setText(null); //this is not okay
+            //holder.mViewMedia.setText(null); //this is not okay
             //holder.mViewMedia.setVisibility(View.GONE);
         }
         holder.mViewMedia.setOnClickListener(new View.OnClickListener() {
