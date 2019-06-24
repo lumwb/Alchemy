@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyEventsActivity"
+    android:background="@drawable/gradient">
+
+
+    <FrameLayout
+        android:id="@+id/createEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/createEventText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Create Event"
+            android:textSize="40sp"
+            />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/roomSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createEvent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/roomSizeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max Room Size: "
+            android:textSize="25sp"/>
+
+        <EditText
+            android:id="@+id/roomSizeEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="5"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/evenStartTimeLinear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roomSize"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/startTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Time: "
+            android:textSize="25sp"/>
+
+        <EditText
+            android:id="@+id/startTimeEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="datetime"
+            android:ems="5"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/preferredSexLinear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/evenStartTimeLinear"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/preferredSexText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferred Sex: "
+            android:textSize="25sp"/>
+
+        <RadioGroup
+            android:id="@+id/eventSexRadioGroup"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ageEditText"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/eventMaleRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:layout_margin="5dp"/>
+            <RadioButton
+                android:id="@+id/eventFemaleRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Female" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/createEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preferredSexLinear"
+        android:layout_centerHorizontal="true"
+        android:text=" create "/>
+
+    <TextView
+        android:id="@+id/cancelEventTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/createEventButton"
+        android:layout_centerHorizontal="true"
+        android:text="Cancel Event"/>
+
+
+</RelativeLayout>
