@@ -1,5 +1,6 @@
 package com.nus.alchemy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
@@ -42,6 +44,9 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private String currentUserName;
     private String currentDate;
     private String currentTime;
+    private Button chooseSuitorButton;
+    private Button closeDoorButton;
+    private Button leaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,18 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         if (v == SendMessageButton) {
             sendMessage();
+        }
+        if (v == chooseSuitorButton) {
+
+        }
+        if (v == closeDoorButton) {
+
+        }
+        if (v == leaveButton) {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         }
     }
 
@@ -160,5 +177,11 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         currentUserID = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         groupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
+        chooseSuitorButton = (Button) findViewById(R.id.chooseSuitorButton);
+        closeDoorButton = (Button) findViewById(R.id.closeDoorButton);
+        leaveButton = (Button) findViewById(R.id.leaveGroupButton);
+        chooseSuitorButton.setOnClickListener(this);
+        closeDoorButton.setOnClickListener(this);
+        leaveButton.setOnClickListener(this);
     }
 }
