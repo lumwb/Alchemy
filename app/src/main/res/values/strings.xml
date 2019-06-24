@@ -7,5 +7,6 @@
     </string-array>
     <string name="title_activity_my_events">MyEventsActivity</string>
     <string name="title_activity_create_event">CreateEvent</string>
+    <string name="create_event_button">Create Event</string>
 
 </resources>
