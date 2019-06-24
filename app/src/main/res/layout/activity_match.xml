@@ -7,18 +7,61 @@
     tools:context=".MatchActivity"
     android:background="@drawable/gradient">
 
+    <TextView
+        android:id="@+id/matchTextView"
+        android:text="It's A Match!"
+        android:textColor="#BF4387"
+        android:textSize="40sp"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/picturesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/matchTextView"
+        android:layout_marginTop="40dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/myImage"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/icon"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/otherImage"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/icon"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/sendTextButton"
+        android:layout_below="@id/picturesLayout"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send A Text!" />
+        android:layout_marginTop="90dp"
+        android:text="Send A Text!"
+        android:padding="20sp"
+        android:background="#BF4387"/>
 
     <Button
         android:id="@+id/closeButton"
+        android:layout_margin="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/sendTextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Close x" />
+        android:text="Close x"
+        android:padding="20sp"
+        android:background="#BF4387"/>
+
 </RelativeLayout>
