@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.nus.alchemy.MatchActivity;
 import com.nus.alchemy.R;
 
@@ -41,6 +42,10 @@ public class SuitorListAdapter extends RecyclerView.Adapter<SuitorListAdapter.Su
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MatchActivity.class);
+                String user1 = FirebaseAuth.getInstance().getUid();
+                String user2 = "P5VGhmdxLhZmxnwlySYAtsgWTL43";
+                intent.putExtra("user1", user1);
+                intent.putExtra("user2", user2);
                 v.getContext().startActivity(intent);
             }
         });
