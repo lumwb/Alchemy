@@ -59,12 +59,18 @@
             android:text="Start Time: "
             android:textSize="25sp"/>
 
-        <EditText
-            android:id="@+id/startTimeEditText"
+        <!--<EditText-->
+            <!--android:id="@+id/startTimeEditText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="datetime"-->
+            <!--android:ems="5"/>-->
+
+        <TimePicker
+            android:id="@+id/timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="datetime"
-            android:ems="5"/>
+            android:timePickerMode="spinner" />
     </LinearLayout>
 
     <LinearLayout
@@ -105,13 +111,26 @@
 
     </LinearLayout>
 
-    <android.support.design.button.MaterialButton
+    <!--<android.support.design.button.MaterialButton-->
+        <!--android:id="@+id/createEventButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/preferredSexLinear"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text=" create "/>-->
+
+    <Button
         android:id="@+id/createEventButton"
+        android:background="#BF4387"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/preferredSexLinear"
+        android:layout_below="@id/preferredSexLinear"
         android:layout_centerHorizontal="true"
-        android:text=" create "/>
+        android:layout_marginTop="20dp"
+        android:ems="7"
+        android:text="create"
+        android:textColor="#FFFFFF"
+        />
 
     <TextView
         android:id="@+id/cancelEventTextView"

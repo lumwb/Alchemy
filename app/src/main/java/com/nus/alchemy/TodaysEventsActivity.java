@@ -1,7 +1,5 @@
 package com.nus.alchemy;
 
-import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,50 +10,74 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.List;
 
 public class TodaysEventsActivity extends AppCompatActivity implements View.OnClickListener{
 
-    BottomNavigationView bottomNavigationView;
-    TextView tempMatchTextView;
-    TextView tempJoinGroup;
-    DatabaseReference eventDb;
+    private BottomNavigationView bottomNavigationView;
+    private TextView tempMatchTextView;
+    private TextView tempJoinGroup;
+    private ArrayList<EventObject> eventList;
 
-    private void initAttributes() {
-        eventDb = FirebaseDatabase.getInstance().getReference();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.initAttributes();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todays_events);
+
         setUpBottomNavBar();
+
+        //init eventList
+        eventList = new ArrayList<>();
+
         tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
         tempMatchTextView.setOnClickListener(this);
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
 
-        EventAdapter eventAdapter = new EventAdapter(createFakeEventList(30));
-        recList.setAdapter(eventAdapter);
+        //get all event from Firebase
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Events");
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            EventObject event = childSnapshot.getValue(EventObject.class);
+                            eventList.add(event);
+                        }
+                        //build Reycler View inside here to prevent null eventHandler
+                        buildEventRecyclerView();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //log error
+                    }
+                });
+
         tempJoinGroup = (TextView) findViewById(R.id.joinGroup);
         tempJoinGroup.setOnClickListener(this);
+    }
 
+    //custom method to build RecyclerView
+    public void buildEventRecyclerView() {
+        if (!this.eventList.isEmpty()) {
+            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+            recList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recList.setLayoutManager(llm);
+            EventAdapter eventAdapter = new EventAdapter(this.eventList);
+            recList.setAdapter(eventAdapter);
+        }
     }
 
     @Override
@@ -100,28 +122,5 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
                 return true;
             }
         });
-    }
-
-    //Method to create fake events
-    @TargetApi(26)
-    private List<EventObject> createFakeEventList(int size) {
-
-        List<EventObject> result = new ArrayList<EventObject>();
-        for (int i=1; i <= size; i++) {
-            EventObject ci = new EventObject();
-            ci.name = "test name " + i;
-            ci.eventName = "test event " + i;
-            ci.startTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30);
-            if (i % 2 == 0)
-            {
-                ci.preferred_gender = "Male";
-            } else {
-                ci.preferred_gender = "Female";
-            }
-            result.add(ci);
-
-        }
-
-        return result;
     }
 }

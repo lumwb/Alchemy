@@ -52,14 +52,27 @@
             />
     </FrameLayout>
 
-    <android.support.design.button.MaterialButton
+    <!--<android.support.design.button.MaterialButton-->
+        <!--android:id="@+id/newEventButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/myEvents"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:textAppearance="@string/create_event_button"-->
+        <!--android:text="@string/create_event_button"/>-->
+
+    <Button
         android:id="@+id/newEventButton"
+        android:background="#BF4387"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/myEvents"
+        android:layout_below="@id/myEvents"
         android:layout_centerHorizontal="true"
-        android:textAppearance="@string/create_event_button"
-        android:text="@string/create_event_button"/>
+        android:layout_marginTop="20dp"
+        android:ems="7"
+        android:text="Create New Event"
+        android:textColor="#FFFFFF"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
