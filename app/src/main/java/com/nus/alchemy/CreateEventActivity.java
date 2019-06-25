@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventObject;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private EditText roomSizeEditText;
     private EditText startTimeEditText;
     private TimePicker startTimePicker;
+    private DatePicker eventDatePicker;
     private RadioGroup eventSexRadioGroup;
     private Button createEventButton;
     private TextView cancelEventTextView;
@@ -47,6 +50,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         createEventButton.setOnClickListener(this);
         cancelEventTextView = findViewById(R.id.cancelEventTextView);
         cancelEventTextView.setOnClickListener(this);
+        eventDatePicker = findViewById(R.id.eventDatePicker);
+        eventDatePicker.setMinDate(System.currentTimeMillis() - 1000);
         startTimePicker= findViewById(R.id.timePicker);
         startTimePicker.setIs24HourView(true);
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -89,12 +94,21 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
         eventStartTime = hour + ":" + minute;
 
+        //get date - follow ISO8601 standard
+        int day = eventDatePicker.getDayOfMonth();
+        int month = eventDatePicker.getMonth();
+        int year =  eventDatePicker.getYear();
+        String eventDate = year + "-" + month + "-" + day;
+
+        //in future can use this to decode string into date object
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 
         //push event event child
         String eventID = FirebaseDatabase.getInstance().getReference().child("Events").push().getKey();
 
 
-        EventObject event = new EventObject(maxRoomSize, eventStartTime, preferredSex,
+        EventObject event = new EventObject(maxRoomSize, eventStartTime, eventDate, preferredSex,
                 this.userID, this.name);
 
         Map<String, EventObject> users = new HashMap<>();
@@ -122,7 +136,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 name = dataSnapshot.getValue(String.class);
-                //do what you want with the email
             }
 
             @Override
