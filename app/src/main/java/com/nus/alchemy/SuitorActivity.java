@@ -28,7 +28,6 @@ public class SuitorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suitor);
-
         suitorList = new ArrayList<>();
         initRecyclerView();
         getUserSuitorList();
@@ -46,7 +45,7 @@ public class SuitorActivity extends AppCompatActivity {
 
     private void getUserSuitorList() {
         String groupId = getIntent().getExtras().get("groupId").toString();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("participants");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Participants");
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
