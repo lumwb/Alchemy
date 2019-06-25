@@ -96,9 +96,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         //get date - follow ISO8601 standard
         int day = eventDatePicker.getDayOfMonth();
-        int month = eventDatePicker.getMonth();
+        int month = eventDatePicker.getMonth() + 1;
         int year =  eventDatePicker.getYear();
-        String eventDate = year + "-" + month + "-" + day;
+        String formatted_day = String.format("%02d", day);
+        String formatted_month = String.format("%02d", month);
+        String eventDate = year + "-" + formatted_month + "-" + formatted_day;
 
         //in future can use this to decode string into date object
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,8 +120,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         //write some validation here to check room size and date
 
+        //push event to event by date
+        FirebaseDatabase.getInstance().getReference().child("Date_Events")
+                .child(eventDate).push().setValue(event);
         //push event to user_events
-
+        FirebaseDatabase.getInstance().getReference().child("User_Events")
+                .child(userID).child(eventDate).push().setValue(event);
 
 
         //redirect back to myEventPage, will reread all events required
