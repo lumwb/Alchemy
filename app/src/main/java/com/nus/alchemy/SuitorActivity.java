@@ -3,13 +3,16 @@ package com.nus.alchemy;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.LinearLayout;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nus.alchemy.Model.SuitorListAdapter;
 import com.nus.alchemy.Model.SuitorObject;
 
 import java.util.ArrayList;
@@ -27,7 +30,18 @@ public class SuitorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_suitor);
 
         suitorList = new ArrayList<>();
+        initRecyclerView();
         getUserSuitorList();
+    }
+
+    private void initRecyclerView() {
+        mSuitorList = findViewById(R.id.suitorListRecyclerView);
+        mSuitorList.setNestedScrollingEnabled(false);
+        mSuitorList.setHasFixedSize(false);
+        mSuitorListLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
+        mSuitorList.setLayoutManager(mSuitorListLayoutManager);
+        mSuitorListAdapter = new SuitorListAdapter(suitorList);
+        mSuitorList.setAdapter(mSuitorListAdapter);
     }
 
     private void getUserSuitorList() {
@@ -37,8 +51,8 @@ public class SuitorActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot particpants : dataSnapshot.getChildren()) {
-                        String suitorId = particpants.getKey().toString();
+                    for (DataSnapshot participants : dataSnapshot.getChildren()) {
+                        String suitorId = participants.getKey().toString();
                         SuitorObject suitorObject = new SuitorObject(suitorId);
                         boolean exists = true;
 //                        for (SuitorObject mSuitorIterator : suitorList) {
