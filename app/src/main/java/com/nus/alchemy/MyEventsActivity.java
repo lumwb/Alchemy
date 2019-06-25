@@ -17,23 +17,30 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MyEventsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    BottomNavigationView bottomNavigationView;
-    TextView tempMatchTextView;
-    TextView tempGroupMatch;
+    private BottomNavigationView bottomNavigationView;
+    private TextView tempMatchTextView;
+    private TextView tempGroupMatch;
     private Button newEventButton;
-    DatabaseReference eventDB;
+    private String userID;
+    private ArrayList<EventObject> myEventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,11 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_my_events);
         setUpBottomNavBar();
 
+        //init myEventList
+        myEventList = new ArrayList<>();
+
+        //get userID
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
         tempMatchTextView.setOnClickListener(this);
@@ -49,18 +61,53 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         newEventButton = (Button) findViewById(R.id.newEventButton);
         newEventButton.setOnClickListener(this);
 
+        //get today date in ISO8601 format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = dateFormat.format(new Date());
 
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("User_Events")
+                .child(userID).child(todayDate);
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            EventObject event = childSnapshot.getValue(EventObject.class);
+                            myEventList.add(event);
+                        }
+                        //build Reycler View inside here to prevent null eventHandler
+                        buildMyEventRecyclerView();
+                    }
 
-        EventAdapter eventAdapter = new EventAdapter(createFakeList(30));
-        recList.setAdapter(eventAdapter);
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //log error
+                    }
+                });
 
-        this.eventDB = FirebaseDatabase.getInstance().getReference().child("user-event");
+//        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+//        recList.setHasFixedSize(true);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        recList.setLayoutManager(llm);
+//
+//        EventAdapter eventAdapter = new EventAdapter(createFakeList(30));
+//        recList.setAdapter(eventAdapter);
 
+
+    }
+
+    public void buildMyEventRecyclerView() {
+        //check that myEventList has been read from firebase
+        if (!this.myEventList.isEmpty()) {
+            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+            recList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recList.setLayoutManager(llm);
+            EventAdapter eventAdapter = new EventAdapter(this.myEventList);
+            recList.setAdapter(eventAdapter);
+        }
     }
 
     @Override
