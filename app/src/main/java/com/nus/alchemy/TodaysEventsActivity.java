@@ -1,6 +1,5 @@
 package com.nus.alchemy;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,23 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.List;
 
 public class TodaysEventsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -90,6 +84,10 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == tempJoinGroup) {
+
+            //weiboons hash code babbyyy
+            String weiboonKey = "P5VGhmdxLhZmxnwlySYAtsgWTL43";
+
             //get the td of the chat from the card
             //gmailPhone
             String tempChatHost = "P5VGhmdxLhZmxnwlySYAtsgWTL43";
@@ -97,10 +95,10 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
             //technically the id of the chat should be generated at event creation but temp use chathost id
             DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
             groupRef.child(tempChatHost).child("isOpen").setValue(true);
-            groupRef.child(tempChatHost).child("Host").setValue(tempChatHost);
+            groupRef.child(tempChatHost).child("Host").setValue("P5VGhmdxLhZmxnwlySYAtsgWTL43");
             groupRef.child(tempChatHost).child("Participants").child(currentUserId).setValue(true);
             Intent intent = new Intent(getApplicationContext(), GroupChatActivity.class);
-            intent.putExtra("groupHost", tempChatHost);
+            intent.putExtra("groupHost", "P5VGhmdxLhZmxnwlySYAtsgWTL43");
 
 
 

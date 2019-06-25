@@ -29,8 +29,8 @@ public class SuitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suitor);
         suitorList = new ArrayList<>();
-        initRecyclerView();
         getUserSuitorList();
+        initRecyclerView();
     }
 
     private void initRecyclerView() {
@@ -52,11 +52,11 @@ public class SuitorActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Iterable<DataSnapshot> participants = dataSnapshot.getChildren();
                     for (DataSnapshot suitor : participants) {
-                        String name = suitor.getValue().toString();
-                        SuitorObject suitorObject = new SuitorObject(name);
+                        String suitorID = suitor.getKey().toString();
+                        final String tempName;
+                        SuitorObject suitorObject = new SuitorObject(suitorID);
                         suitorList.add(suitorObject);
                         mSuitorListAdapter.notifyDataSetChanged();
-
                     }
 //                    for (DataSnapshot participants : dataSnapshot.getChildren()) {
 //
