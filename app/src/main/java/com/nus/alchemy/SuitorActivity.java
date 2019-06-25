@@ -54,14 +54,14 @@ public class SuitorActivity extends AppCompatActivity {
                         String suitorId = participants.getKey().toString();
                         SuitorObject suitorObject = new SuitorObject(suitorId);
                         boolean exists = true;
-//                        for (SuitorObject mSuitorIterator : suitorList) {
-//                            if (mSuitorIterator.getSuitorId().equals(suitorObject.getSuitorId())) {
-//                                exists = true;
-//                            }
-//                        }
-//                        if (exists) {
-//                            continue;
-//                        }
+                        for (SuitorObject mSuitorIterator : suitorList) {
+                            if (mSuitorIterator.getSuitorId().equals(suitorObject.getSuitorId())) {
+                                exists = true;
+                            }
+                        }
+                        if (exists) {
+                            continue;
+                        }
                         suitorList.add(suitorObject);
                         mSuitorListAdapter.notifyDataSetChanged();
                     }
