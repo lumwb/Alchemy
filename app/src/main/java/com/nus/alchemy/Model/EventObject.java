@@ -6,6 +6,7 @@ public class EventObject {
     private String name;
     private String preferredSex;
     private String startTime;
+    private String eventDate;
     private String chatID;
     private String creatorUserID;
     private String creatorName;
@@ -14,14 +15,15 @@ public class EventObject {
     //null constructor for firebase ORM
     public EventObject() {};
 
-    public EventObject(int maxRoomSize, String startTime, String preferredSex, String creatorUserID,
-                       String creatorName)
+    public EventObject(int maxRoomSize, String startTime, String eventDate, String preferredSex,
+                       String creatorUserID, String creatorName)
     {
         this.maxRoomSize = maxRoomSize;
         this.startTime = startTime;
         this.preferredSex = preferredSex;
         this.creatorUserID = creatorUserID;
         this.creatorName = creatorName;
+        this.eventDate = eventDate;
     }
 
     //getters
@@ -29,6 +31,7 @@ public class EventObject {
     public String getCreatorUserID() { return creatorUserID; }
     public String getPreferredSex() { return preferredSex; }
     public String getStartTime() { return startTime; }
+    public String getEventDate() { return eventDate; }
     public String getCreatorName() { return creatorName; }
 
     //setters
