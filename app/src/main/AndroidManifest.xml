@@ -13,8 +13,10 @@
         android:roundIcon="@drawable/rounded_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GroupChatActivity"
-            android:parentActivityName=".ProfileActivity"/>
+        <activity android:name=".SuitorActivity"></activity>
+        <activity
+            android:name=".GroupChatActivity"
+            android:parentActivityName=".ProfileActivity" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".MatchActivity" />
         <activity android:name=".MyEventsActivity" />

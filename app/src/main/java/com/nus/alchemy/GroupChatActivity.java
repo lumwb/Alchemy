@@ -96,7 +96,11 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             sendMessage();
         }
         if (v == chooseSuitorButton) {
-
+            Intent intent = new Intent(getApplicationContext(), SuitorActivity.class);
+            intent.putExtra("groupId", groupHost);
+            startActivity(intent);
+            finish();
+            return;
         }
         if (v == closeDoorButton) {
 
@@ -193,5 +197,9 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         chooseSuitorButton.setOnClickListener(this);
         closeDoorButton.setOnClickListener(this);
         leaveButton.setOnClickListener(this);
+        if (!groupHost.equals(mAuth.getUid())) {
+            chooseSuitorButton.setVisibility(View.GONE);
+            closeDoorButton.setVisibility(View.GONE);
+        }
     }
 }
