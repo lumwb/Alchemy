@@ -26,10 +26,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(EventViewHolder contactViewHolder, int i) {
         EventObject ci = eventObjectList.get(i);
-        contactViewHolder.vName.setText(ci.name);
-        contactViewHolder.vPreferredSex.setText(ci.preferred_gender);
-        contactViewHolder.vStartTime.setText(ci.startTime.toString());
-        contactViewHolder.vEventName.setText(ci.eventName);
+        contactViewHolder.vName.setText(ci.getCreatorName());
+        contactViewHolder.vPreferredSex.setText(ci.getPreferredSex());
+        contactViewHolder.vStartTime.setText(ci.getStartTime());
+        contactViewHolder.vMaxRoomSize.setText(String.valueOf(ci.getMaxRoomSize()));
     }
 
     @Override
@@ -45,14 +45,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         protected TextView vName;
         protected TextView vPreferredSex;
         protected TextView vStartTime;
-        protected TextView vEventName;
+        protected TextView vMaxRoomSize;
 
         public EventViewHolder(View v) {
             super(v);
             vName =  (TextView) v.findViewById(R.id.txtName);
             vPreferredSex = (TextView)  v.findViewById(R.id.txtPreferredSex);
             vStartTime = (TextView)  v.findViewById(R.id.txtStartTime);
-            vEventName = (TextView) v.findViewById(R.id.eventName);
+            vMaxRoomSize = (TextView) v.findViewById(R.id.txtMaxRoomSize);
         }
     }
 }

@@ -47,6 +47,7 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         tempGroupMatch = (TextView) findViewById(R.id.createGrouptemp);
         tempGroupMatch.setOnClickListener(this);
         newEventButton = (Button) findViewById(R.id.newEventButton);
+        newEventButton.setOnClickListener(this);
 
 
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
@@ -75,9 +76,9 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         }
         if (v == newEventButton) {
             //redirect to createEventPage
-            Intent goToCreateEventPage = new Intent(getApplicationContext(), CreateEventActivity.class);
+            Intent goToCreateNewEvent = new Intent(getApplicationContext(), CreateEventActivity.class);
+            startActivity(goToCreateNewEvent);
             finish();
-            startActivity(goToCreateEventPage);
             return;
         }
     }
@@ -138,17 +139,16 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         List<EventObject> result = new ArrayList<EventObject>();
         for (int i=1; i <= size; i++) {
             EventObject ci = new EventObject();
-            ci.name = "test name " + i;
-            ci.eventName = "test event " + i;
-            ci.startTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30);
+            ci.setCreatorName("TEST NAME" + i);
+            ci.setStartTime(LocalDateTime.of(2015, Month.JULY, 29, 19, 30).toString());
             if (i % 2 == 0)
             {
-                ci.preferred_gender = "Male";
+                ci.setPreferredSex("Male");
             } else {
-                ci.preferred_gender = "Female";
+                ci.setPreferredSex("Female");
             }
+            ci.setMaxRoomSize(i);
             result.add(ci);
-
         }
 
         return result;

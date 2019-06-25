@@ -111,12 +111,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     //check here
     private void createUserDb(String userID, String name, String age, String sex) {
         firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference().child("Users").child(userID);
+        DatabaseReference databaseUserReference = firebaseDatabase.getReference().child("Users").child(userID);
         HashMap<String, Object> profMap = new HashMap<>();
         profMap.put("Name", name);
         profMap.put("Age", age);
         profMap.put("Sex", sex);
         profMap.put("Story", "");
-        databaseReference.setValue(profMap);
+        databaseUserReference.setValue(profMap);
+
+        //create user_event child
+        DatabaseReference databaseEventUserReference = firebaseDatabase.getReference().child("User_Events").child(userID);
     }
 }
