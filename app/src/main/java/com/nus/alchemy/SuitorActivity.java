@@ -50,21 +50,30 @@ public class SuitorActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot participants : dataSnapshot.getChildren()) {
-                        String suitorId = participants.getKey().toString();
-                        SuitorObject suitorObject = new SuitorObject(suitorId);
-                        boolean exists = true;
-                        for (SuitorObject mSuitorIterator : suitorList) {
-                            if (mSuitorIterator.getSuitorId().equals(suitorObject.getSuitorId())) {
-                                exists = true;
-                            }
-                        }
-                        if (exists) {
-                            continue;
-                        }
+                    Iterable<DataSnapshot> participants = dataSnapshot.getChildren();
+                    for (DataSnapshot suitor : participants) {
+                        String name = suitor.getValue().toString();
+                        SuitorObject suitorObject = new SuitorObject(name);
                         suitorList.add(suitorObject);
                         mSuitorListAdapter.notifyDataSetChanged();
+
                     }
+//                    for (DataSnapshot participants : dataSnapshot.getChildren()) {
+//
+//                        String suitorId = participants.getKey().toString();
+//                        SuitorObject suitorObject = new SuitorObject(suitorId);
+//                        boolean exists = true;
+//                        for (SuitorObject mSuitorIterator : suitorList) {
+//                            if (mSuitorIterator.getSuitorId().equals(suitorObject.getSuitorId())) {
+//                                exists = true;
+//                            }
+//                        }
+//                        if (exists) {
+//                            continue;
+//                        }
+//                        suitorList.add(suitorObject);
+//                        mSuitorListAdapter.notifyDataSetChanged();
+//                    }
                 }
             }
 
