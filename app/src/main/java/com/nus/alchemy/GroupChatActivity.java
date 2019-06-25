@@ -1,5 +1,6 @@
 package com.nus.alchemy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
@@ -36,18 +38,23 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private String currentGroupName;
     private FirebaseAuth mAuth;
     private DatabaseReference userRef;
-    private DatabaseReference groupNameRef;
+    private DatabaseReference groupMessagesRef;
     private DatabaseReference groupMessageKeyRef;
     private String currentUserID;
     private String currentUserName;
+    private String groupHost;
     private String currentDate;
     private String currentTime;
+    private Button chooseSuitorButton;
+    private Button closeDoorButton;
+    private Button leaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
-        currentGroupName = getIntent().getExtras().get("groupName").toString();
+        currentGroupName = getIntent().getExtras().get("groupHost").toString();
+        groupHost = getIntent().getExtras().get("groupHost").toString();
         initAttributes();
         getUserInfo();
     }
@@ -55,7 +62,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStart() {
         super.onStart();
-        groupNameRef.addChildEventListener(new ChildEventListener() {
+        groupMessagesRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
@@ -88,11 +95,23 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         if (v == SendMessageButton) {
             sendMessage();
         }
+        if (v == chooseSuitorButton) {
+
+        }
+        if (v == closeDoorButton) {
+
+        }
+        if (v == leaveButton) {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
     }
 
     private void sendMessage() {
         String message = userMessageInput.getText().toString();
-        String messageKey = groupNameRef.push().getKey();
+        String messageKey = groupMessagesRef.push().getKey();
         if (TextUtils.isEmpty(message)) {
             return;
         }
@@ -106,8 +125,8 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             currentTime = currentTimeFormat.format(calForTime.getTime());
 
             HashMap<String,Object> groupMessageKey = new HashMap<>();
-            groupNameRef.updateChildren(groupMessageKey);
-            groupMessageKeyRef = groupNameRef.child(messageKey);
+            groupMessagesRef.updateChildren(groupMessageKey);
+            groupMessageKeyRef = groupMessagesRef.child(messageKey);
             HashMap<String, Object> messageInfoMap = new HashMap<>();
             messageInfoMap.put("name", currentUserName);
             messageInfoMap.put("message", message);
@@ -121,12 +140,20 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
 
 
     private void DisplayMessages(DataSnapshot dataSnapshot) {
-        Iterator iterator = dataSnapshot.getChildren().iterator();
-        while (iterator.hasNext()) {
-            String chatDate = ((DataSnapshot) iterator.next()).getValue().toString();
-            String chatMessage = ((DataSnapshot) iterator.next()).getValue().toString();
-            String chatName = ((DataSnapshot) iterator.next()).getValue().toString();
-            String chatTime = ((DataSnapshot) iterator.next()).getValue().toString();
+        Iterator iterator = dataSnapshot.child("Messages").getChildren().iterator();
+//        while (iterator.hasNext()) {
+//            String chatDate = ((DataSnapshot) iterator.next()).getValue().toString();
+//            String chatMessage = ((DataSnapshot) iterator.next()).getValue().toString();
+//            String chatName = ((DataSnapshot) iterator.next()).getValue().toString();
+//            String chatTime = ((DataSnapshot) iterator.next()).getValue().toString();
+//            displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n\n");
+//            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//        }
+        for (DataSnapshot child : dataSnapshot.child("Messages").getChildren()) {
+            String chatDate = child.child("date").getValue().toString();
+            String chatMessage = child.child("message").getValue().toString();
+            String chatName = child.child("name").getValue().toString();
+            String chatTime = child.child("time").getValue().toString();
             displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n\n");
             mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
@@ -159,6 +186,12 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        groupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
+        groupMessagesRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Messages");
+        chooseSuitorButton = (Button) findViewById(R.id.chooseSuitorButton);
+        closeDoorButton = (Button) findViewById(R.id.closeDoorButton);
+        leaveButton = (Button) findViewById(R.id.leaveGroupButton);
+        chooseSuitorButton.setOnClickListener(this);
+        closeDoorButton.setOnClickListener(this);
+        leaveButton.setOnClickListener(this);
     }
 }

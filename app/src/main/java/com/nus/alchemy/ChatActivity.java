@@ -181,7 +181,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         custom_name.setText(getIntent().getExtras().getString("otherUserName"));
         chatProfPic = (CircleImageView) findViewById(R.id.custom_profile_image);
         String otherUserProfImg = getIntent().getExtras().getString("otherUserProfileImg");
-        Picasso.get().load(otherUserProfImg).into(chatProfPic);
+        if (!otherUserProfImg.equals("")) {
+            Picasso.get().load(otherUserProfImg).into(chatProfPic);
+        }
     }
 
     private void initMedia() {
