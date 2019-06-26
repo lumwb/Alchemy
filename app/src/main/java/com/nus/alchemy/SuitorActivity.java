@@ -22,7 +22,6 @@ public class SuitorActivity extends AppCompatActivity {
     private RecyclerView mSuitorList;
     private RecyclerView.Adapter mSuitorListAdapter;
     private RecyclerView.LayoutManager mSuitorListLayoutManager;
-    private String currentSuitorName;
     ArrayList<SuitorObject> suitorList;
 
     @Override
@@ -30,8 +29,8 @@ public class SuitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suitor);
         suitorList = new ArrayList<>();
-        getUserSuitorList();
         initRecyclerView();
+        getUserSuitorList();
     }
 
     private void initRecyclerView() {
@@ -45,50 +44,20 @@ public class SuitorActivity extends AppCompatActivity {
     }
 
     private void getUserSuitorList() {
-        String groupId = getIntent().getExtras().get("groupId").toString();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId).child("Participants");
+        final String groupId = getIntent().getExtras().get("groupId").toString();
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Iterable<DataSnapshot> participants = dataSnapshot.getChildren();
+                    Iterable<DataSnapshot> participants = dataSnapshot.child("Groups").child(groupId).child("Participants").getChildren();
                     for (DataSnapshot suitor : participants) {
-                        String suitorID = suitor.getKey().toString();
-                        //get suitornames
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference nameRef = ref.child("Users").child(suitorID).child("Name");
-                        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                currentSuitorName = dataSnapshot.getValue(String.class);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                        //pass suitor back into suitorlist
-                        SuitorObject suitorObject = new SuitorObject(suitorID, currentSuitorName);
+                        String suitorID = suitor.getKey();
+                        String suitorName = dataSnapshot.child("Users").child(suitorID).child("Name").getValue().toString();
+                        SuitorObject suitorObject = new SuitorObject(suitorID, suitorName);
                         suitorList.add(suitorObject);
                         mSuitorListAdapter.notifyDataSetChanged();
                     }
-//                    for (DataSnapshot participants : dataSnapshot.getChildren()) {
-//
-//                        String suitorId = participants.getKey().toString();
-//                        SuitorObject suitorObject = new SuitorObject(suitorId);
-//                        boolean exists = true;
-//                        for (SuitorObject mSuitorIterator : suitorList) {
-//                            if (mSuitorIterator.getSuitorId().equals(suitorObject.getSuitorId())) {
-//                                exists = true;
-//                            }
-//                        }
-//                        if (exists) {
-//                            continue;
-//                        }
-//                        suitorList.add(suitorObject);
-//                        mSuitorListAdapter.notifyDataSetChanged();
-//                    }
                 }
             }
 
