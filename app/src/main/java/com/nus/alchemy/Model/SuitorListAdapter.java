@@ -36,14 +36,15 @@ public class SuitorListAdapter extends RecyclerView.Adapter<SuitorListAdapter.Su
 
     @Override
     public void onBindViewHolder(@NonNull final SuitorListViewHolder holder, final int position) {
-        final String suitorName = suitorList.get(position).getSuitorName();
+        final String suitorName = suitorList.get(position).getSuitorName(); //for now, should change to id
+        final String suitorId = suitorList.get(position).getSuitorId();
         holder.mSuitor.setText(suitorName);
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MatchActivity.class);
                 String user1 = FirebaseAuth.getInstance().getUid();
-                String user2 = "P5VGhmdxLhZmxnwlySYAtsgWTL43";
+                String user2 = suitorId;
                 intent.putExtra("user1", user1);
                 intent.putExtra("user2", user2);
                 v.getContext().startActivity(intent);

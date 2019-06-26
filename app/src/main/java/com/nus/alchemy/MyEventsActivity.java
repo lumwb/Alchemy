@@ -32,7 +32,6 @@ import java.util.Date;
 public class MyEventsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private BottomNavigationView bottomNavigationView;
-    private TextView tempMatchTextView;
     private TextView tempGroupMatch;
     private Button newEventButton;
     private String userID;
@@ -50,8 +49,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         //get userID
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
-        tempMatchTextView.setOnClickListener(this);
         tempGroupMatch = (TextView) findViewById(R.id.createGrouptemp);
         tempGroupMatch.setOnClickListener(this);
         newEventButton = (Button) findViewById(R.id.newEventButton);
@@ -110,12 +107,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == tempMatchTextView) {
-            Intent goToMatch = new Intent(getApplicationContext(), MatchActivity.class);
-            startActivity(goToMatch);
-            finish();
-            return;
-        }
         if (v == tempGroupMatch) {
             createNewGroup();
         }

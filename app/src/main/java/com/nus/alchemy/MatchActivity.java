@@ -53,10 +53,10 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
                 image1 = dataSnapshot.child(myID).child("Image").getValue().toString();
                 image2 = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
                 if (!image1.equals("")) {
-                    Picasso.get().load(image1).into(myImage);
+                    Picasso.get().load(image1).placeholder(R.drawable.icon).into(myImage);
                 }
                 if (!image2.equals("")) {
-                    Picasso.get().load(image2).into(otherImage);
+                    Picasso.get().load(image2).placeholder(R.drawable.icon).into(otherImage);
                 }
             }
 
