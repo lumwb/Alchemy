@@ -1,6 +1,5 @@
 package com.nus.alchemy;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,18 +19,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class MyEventsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,15 +58,28 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = dateFormat.format(new Date());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("User_Events")
-                .child(userID).child(todayDate);
+        //get today dateTime in ISO8601 format
+        final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+
+        Query ref = FirebaseDatabase.getInstance().getReference().child("User_Events")
+                .child(userID).child(todayDate).orderByChild("startTime");
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Date currentTime = new Date();
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                             EventObject event = childSnapshot.getValue(EventObject.class);
-                            myEventList.add(event);
+                            Date eventDateTime = null;
+                            try {
+                                eventDateTime = dateTimeFormat.parse(
+                                        event.getDateTime());
+                            } catch (java.text.ParseException e) {}
+                            if (currentTime.compareTo(eventDateTime) < 0) {
+                                //event is after current time
+                                myEventList.add(event);
+                            }
                         }
                         //build Reycler View inside here to prevent null eventHandler
                         buildMyEventRecyclerView();
@@ -81,17 +90,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
                         //log error
                     }
                 });
-
-//        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-//        recList.setHasFixedSize(true);
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        recList.setLayoutManager(llm);
-//
-//        EventAdapter eventAdapter = new EventAdapter(createFakeList(30));
-//        recList.setAdapter(eventAdapter);
-
-
     }
 
     public void buildMyEventRecyclerView() {
@@ -169,27 +167,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
                 return true;
             }
         });
-    }
-
-    @TargetApi(26)
-    private List<EventObject> createFakeList(int size) {
-
-        List<EventObject> result = new ArrayList<EventObject>();
-        for (int i=1; i <= size; i++) {
-            EventObject ci = new EventObject();
-            ci.setCreatorName("TEST NAME" + i);
-            ci.setStartTime(LocalDateTime.of(2015, Month.JULY, 29, 19, 30).toString());
-            if (i % 2 == 0)
-            {
-                ci.setPreferredSex("Male");
-            } else {
-                ci.setPreferredSex("Female");
-            }
-            ci.setMaxRoomSize(i);
-            result.add(ci);
-        }
-
-        return result;
     }
 }
 

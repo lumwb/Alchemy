@@ -2,7 +2,7 @@ package com.nus.alchemy.Model;
 
 
 public class EventObject {
-    private String eventName;
+    private String eventTitle;
     private String name;
     private String preferredSex;
     private String startTime;
@@ -10,13 +10,14 @@ public class EventObject {
     private String chatID;
     private String creatorUserID;
     private String creatorName;
+    private String dateTime;
     private int maxRoomSize;
 
     //null constructor for firebase ORM
     public EventObject() {};
 
-    public EventObject(int maxRoomSize, String startTime, String eventDate, String preferredSex,
-                       String creatorUserID, String creatorName)
+    public EventObject(String eventTitle, int maxRoomSize, String startTime, String eventDate, String dateTime,
+                       String preferredSex, String creatorUserID, String creatorName)
     {
         this.maxRoomSize = maxRoomSize;
         this.startTime = startTime;
@@ -24,6 +25,8 @@ public class EventObject {
         this.creatorUserID = creatorUserID;
         this.creatorName = creatorName;
         this.eventDate = eventDate;
+        this.dateTime = dateTime;
+        this.eventTitle = eventTitle;
     }
 
     //getters
@@ -33,10 +36,11 @@ public class EventObject {
     public String getStartTime() { return startTime; }
     public String getEventDate() { return eventDate; }
     public String getCreatorName() { return creatorName; }
-
+    public String getDateTime() { return dateTime; }
+    public String getEventTitle() { return eventTitle; }
     //setters
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setEventTitle(String eventName) {
+        this.eventTitle = eventName;
     }
     public void setPreferredSex(String sex) {
         this.preferredSex = sex;

@@ -5,22 +5,46 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    card_view:cardCornerRadius="1dp"
-    android:layout_margin="5dp">
+    card_view:cardCornerRadius="0dp"
+    android:layout_margin="0dp">
+
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/txtEventTitle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="4dp"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:textAppearance="@style/TextAppearance.AppCompat.Body2"-->
+            <!--android:textColor="#DE000000"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/avatar_image"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/avatar_image"-->
+            <!--app:layout_constraintEnd_toEndOf="parent" />-->
+
+        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/avatar_image"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="48dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="48dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginTop="12dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginStart="12dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:padding="4dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:scaleType="centerCrop"&ndash;&gt;-->
+            <!--&lt;!&ndash;app:srcCompat="@drawable/ic_avatar_40dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;app:layout_constraintBottom_toTopOf="@+id/media_image"&ndash;&gt;-->
+            <!--&lt;!&ndash;app:layout_constraintVertical_chainStyle="packed" />&ndash;&gt;-->
+
+    <!--</android.support.constraint.ConstraintLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <!--<TextView-->
-            <!--android:id="@+id/eventName"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:background="@color/white"-->
-            <!--android:text="Event Name: "-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textSize="14dp"/>-->
 
         <TextView
             android:id="@+id/txtName"
