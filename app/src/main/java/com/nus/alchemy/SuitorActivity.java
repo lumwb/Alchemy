@@ -22,6 +22,7 @@ public class SuitorActivity extends AppCompatActivity {
     private RecyclerView mSuitorList;
     private RecyclerView.Adapter mSuitorListAdapter;
     private RecyclerView.LayoutManager mSuitorListLayoutManager;
+    private String currentSuitorName;
     ArrayList<SuitorObject> suitorList;
 
     @Override
@@ -53,8 +54,22 @@ public class SuitorActivity extends AppCompatActivity {
                     Iterable<DataSnapshot> participants = dataSnapshot.getChildren();
                     for (DataSnapshot suitor : participants) {
                         String suitorID = suitor.getKey().toString();
-                        final String tempName;
-                        SuitorObject suitorObject = new SuitorObject(suitorID);
+                        //get suitornames
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference nameRef = ref.child("Users").child(suitorID).child("Name");
+                        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                currentSuitorName = dataSnapshot.getValue(String.class);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        //pass suitor back into suitorlist
+                        SuitorObject suitorObject = new SuitorObject(suitorID, currentSuitorName);
                         suitorList.add(suitorObject);
                         mSuitorListAdapter.notifyDataSetChanged();
                     }
