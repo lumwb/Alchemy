@@ -17,11 +17,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TodaysEventsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -44,15 +47,33 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
         tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
         tempMatchTextView.setOnClickListener(this);
 
-        //get all event from Firebase
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Events");
-        ref.addListenerForSingleValueEvent(
+        //get today date in ISO8601 format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = dateFormat.format(new Date());
+
+        //get today dateTime in ISO8601 format
+        final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+        //get global today event from Firebase
+        Query query = FirebaseDatabase.getInstance().getReference()
+                .child("Date_Events").child(todayDate).orderByChild("startTime");
+        query.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Date currentTime = new Date();
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            //manually filter events here for now.
                             EventObject event = childSnapshot.getValue(EventObject.class);
-                            eventList.add(event);
+                            Date childDateTime = null;
+                            try {
+                                childDateTime = dateTimeFormat.parse(
+                                        event.getDateTime());
+                            } catch (java.text.ParseException e) {}
+                            if (currentTime.compareTo(childDateTime) < 0) {
+                                //event is after current time
+                                eventList.add(event);
+                            }
                         }
                         //build Reycler View inside here to prevent null eventHandler
                         buildEventRecyclerView();

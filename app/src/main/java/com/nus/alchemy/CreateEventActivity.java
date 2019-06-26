@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,15 +23,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventObject;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
+    private EditText eventTitleEditText;
     private EditText roomSizeEditText;
-    private EditText startTimeEditText;
     private TimePicker startTimePicker;
     private DatePicker eventDatePicker;
     private RadioGroup eventSexRadioGroup;
@@ -44,7 +45,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_create_event);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        eventTitleEditText = findViewById(R.id.eventTitleEditText);
         roomSizeEditText = findViewById(R.id.roomSizeEditText);
+        roomSizeEditText.setFilters(new InputFilter[]{new InputFilterMinMax("2", "20")});
         eventSexRadioGroup = findViewById(R.id.eventSexRadioGroup);
         createEventButton = findViewById(R.id.createEventButton);
         createEventButton.setOnClickListener(this);
@@ -74,6 +77,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     public void createEvent() {
         //construct event object
+
+        //get eventTitle
+        String eventTitle = roomSizeEditText.getText().toString();
+
+        //get maxRoomSize
         int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
 
         //get preferred sex
@@ -92,7 +100,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             hour = startTimePicker.getCurrentHour();
             minute = startTimePicker.getCurrentMinute();
         }
-        eventStartTime = hour + ":" + minute;
+        String formatted_hour = String.format("%02d", hour);
+        String formatted_minute = String.format("%02d", minute);
+        eventStartTime = formatted_hour + ":" + formatted_minute;
 
         //get date - follow ISO8601 standard
         int day = eventDatePicker.getDayOfMonth();
@@ -102,16 +112,16 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         String formatted_month = String.format("%02d", month);
         String eventDate = year + "-" + formatted_month + "-" + formatted_day;
 
-        //in future can use this to decode string into date object
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //construct complete dateTime in ISO8601 format
+        String dateTime = eventDate + "T" + eventStartTime;
 
 
         //push event event child
         String eventID = FirebaseDatabase.getInstance().getReference().child("Events").push().getKey();
 
 
-        EventObject event = new EventObject(maxRoomSize, eventStartTime, eventDate, preferredSex,
-                this.userID, this.name);
+        EventObject event = new EventObject(eventTitle, maxRoomSize, eventStartTime, eventDate, dateTime,
+                preferredSex, this.userID, this.name);
 
         Map<String, EventObject> users = new HashMap<>();
         users.put(eventID, event);
@@ -123,6 +133,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //push event to event by date
         FirebaseDatabase.getInstance().getReference().child("Date_Events")
                 .child(eventDate).push().setValue(event);
+
         //push event to user_events
         FirebaseDatabase.getInstance().getReference().child("User_Events")
                 .child(userID).child(eventDate).push().setValue(event);
@@ -149,5 +160,33 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
+    }
+}
+
+class InputFilterMinMax implements InputFilter {
+    private int min, max;
+
+    public InputFilterMinMax(int min, int max) {
+        this.min = min;
+        this.max = max;
+    }
+
+    public InputFilterMinMax(String min, String max) {
+        this.min = Integer.parseInt(min);
+        this.max = Integer.parseInt(max);
+    }
+
+    @Override
+    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+        try {
+            int input = Integer.parseInt(dest.toString() + source.toString());
+            if (isInRange(min, max, input))
+                return null;
+        } catch (NumberFormatException nfe) { }
+        return "";
+    }
+
+    private boolean isInRange(int a, int b, int c) {
+        return b > a ? c >= a && c <= b : c >= b && c <= a;
     }
 }
