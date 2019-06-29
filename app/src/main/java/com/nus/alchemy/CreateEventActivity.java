@@ -30,7 +30,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth firebaseAuth;
     private EditText eventTitleEditText;
-    private EditText roomSizeEditText;
+    //private EditText roomSizeEditText;
     private TimePicker startTimePicker;
     private DatePicker eventDatePicker;
     private RadioGroup eventSexRadioGroup;
@@ -46,8 +46,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         firebaseAuth = FirebaseAuth.getInstance();
         eventTitleEditText = findViewById(R.id.eventTitleEditText);
-        roomSizeEditText = findViewById(R.id.roomSizeEditText);
-        roomSizeEditText.setFilters(new InputFilter[]{new InputFilterMinMax("2", "20")});
+        //roomSizeEditText = findViewById(R.id.roomSizeEditText);
+        //roomSizeEditText.setFilters(new InputFilter[]{new InputFilterMinMax("2", "20")});
         eventSexRadioGroup = findViewById(R.id.eventSexRadioGroup);
         createEventButton = findViewById(R.id.createEventButton);
         createEventButton.setOnClickListener(this);
@@ -82,7 +82,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         String eventTitle = eventTitleEditText.getText().toString();
 
         //get maxRoomSize
-        int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
+        //int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
 
         //get preferred sex
         int radioButtonID = eventSexRadioGroup.getCheckedRadioButtonId();
@@ -120,7 +120,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         String eventID = FirebaseDatabase.getInstance().getReference().child("Events").push().getKey();
 
 
-        EventObject event = new EventObject(eventTitle, maxRoomSize, eventStartTime, eventDate, dateTime,
+        EventObject event = new EventObject(eventTitle, eventStartTime, eventDate, dateTime,
                 preferredSex, this.userID, this.name, eventID);
 
         Map<String, EventObject> users = new HashMap<>();

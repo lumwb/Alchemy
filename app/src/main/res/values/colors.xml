@@ -7,4 +7,12 @@
     <color name="icon_orange">#B86129</color>
     <color name="icon_blue">#4472C4</color>
     <color name="icon_grey">#767171</color>
+    <color name="pink">#BF4387</color>
+
+    <!--the primary colours for our app @jeong-->
+    <color name="primary_white">#FFFFFF</color>
+    <color name="primary_orange">#B86129</color>
+    <color name="primary_blue">#4472C4</color>
+    <color name="primary_grey">#767171</color>
+    <color name="primary_pink">#BF4387</color>
 </resources>

@@ -41,36 +41,37 @@
             android:id="@+id/eventTitleEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLength="40"
             android:ems="8"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/roomSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/eventTitleLinear"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/roomSize"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/eventTitleLinear"-->
+        <!--android:orientation="horizontal">-->
 
-        <TextView
-            android:id="@+id/roomSizeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Max Room Size: "
-            android:textSize="25sp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/roomSizeText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Max Room Size: "-->
+            <!--android:textSize="25sp"/>-->
 
-        <EditText
-            android:id="@+id/roomSizeEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="5"/>
-    </LinearLayout>
+        <!--<EditText-->
+            <!--android:id="@+id/roomSizeEditText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="number"-->
+            <!--android:ems="5"/>-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/eventDateLinear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/roomSize"
+        android:layout_below="@+id/eventTitleLinear"
         android:orientation="horizontal">
 
         <TextView
