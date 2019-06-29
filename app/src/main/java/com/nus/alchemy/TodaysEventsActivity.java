@@ -26,11 +26,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TodaysEventsActivity extends AppCompatActivity implements View.OnClickListener{
+public class TodaysEventsActivity extends AppCompatActivity
+        implements View.OnClickListener{
 
     private BottomNavigationView bottomNavigationView;
     private TextView tempMatchTextView;
     private TextView tempJoinGroup;
+    private String userSex;
+    private String userID;
     private ArrayList<EventObject> eventList;
 
 
@@ -47,6 +50,12 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
         tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
         tempMatchTextView.setOnClickListener(this);
 
+        //get userID
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //get userSex to filter events
+        getSexFromUserID(userID);
+
         //get today date in ISO8601 format
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = dateFormat.format(new Date());
@@ -56,21 +65,26 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
 
         //get global today event from Firebase
         Query query = FirebaseDatabase.getInstance().getReference()
-                .child("Date_Events").child(todayDate).orderByChild("startTime");
+                .child("Date_Events")
+                .child(todayDate).orderByChild("startTime");
+
         query.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        //get current Time for filtering
                         Date currentTime = new Date();
+
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                            //manually filter events here for now.
+                            //filter events by time and preferred sex
                             EventObject event = childSnapshot.getValue(EventObject.class);
                             Date childDateTime = null;
                             try {
                                 childDateTime = dateTimeFormat.parse(
                                         event.getDateTime());
                             } catch (java.text.ParseException e) {}
-                            if (currentTime.compareTo(childDateTime) < 0) {
+                            if (currentTime.compareTo(childDateTime) < 0 &&
+                                    event.getPreferredSex().equals(userSex)) {
                                 //event is after current time
                                 eventList.add(event);
                             }
@@ -97,9 +111,26 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
             LinearLayoutManager llm = new LinearLayoutManager(this);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             recList.setLayoutManager(llm);
+            //pass eventList into adapter
             EventAdapter eventAdapter = new EventAdapter(this.eventList);
             recList.setAdapter(eventAdapter);
         }
+    }
+
+    private void getSexFromUserID(String userID) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference nameRef = ref.child("Users").child(userID).child("Sex");
+        nameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userSex = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -120,8 +151,6 @@ public class TodaysEventsActivity extends AppCompatActivity implements View.OnCl
             groupRef.child(tempChatHost).child("Participants").child(currentUserId).setValue(true);
             Intent intent = new Intent(getApplicationContext(), GroupChatActivity.class);
             intent.putExtra("groupHost", "P5VGhmdxLhZmxnwlySYAtsgWTL43");
-
-
 
 
             startActivity(intent);

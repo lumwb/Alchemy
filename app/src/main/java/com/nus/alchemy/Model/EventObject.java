@@ -3,7 +3,6 @@ package com.nus.alchemy.Model;
 
 public class EventObject {
     private String eventTitle;
-    private String name;
     private String preferredSex;
     private String startTime;
     private String eventDate;
@@ -11,13 +10,15 @@ public class EventObject {
     private String creatorUserID;
     private String creatorName;
     private String dateTime;
+    private String eventID;
     private int maxRoomSize;
+    private boolean isActive;
 
     //null constructor for firebase ORM
     public EventObject() {};
 
     public EventObject(String eventTitle, int maxRoomSize, String startTime, String eventDate, String dateTime,
-                       String preferredSex, String creatorUserID, String creatorName)
+                       String preferredSex, String creatorUserID, String creatorName, String eventID)
     {
         this.maxRoomSize = maxRoomSize;
         this.startTime = startTime;
@@ -27,6 +28,9 @@ public class EventObject {
         this.eventDate = eventDate;
         this.dateTime = dateTime;
         this.eventTitle = eventTitle;
+        this.isActive = false;
+        this.eventID = eventID;
+        this.chatID = "unassigned";
     }
 
     //getters
@@ -38,6 +42,10 @@ public class EventObject {
     public String getCreatorName() { return creatorName; }
     public String getDateTime() { return dateTime; }
     public String getEventTitle() { return eventTitle; }
+    public String getEventID() { return eventID; }
+    public String getChatID() { return chatID; }
+    public boolean getActive() { return isActive; }
+
     //setters
     public void setEventTitle(String eventName) {
         this.eventTitle = eventName;
@@ -54,4 +62,6 @@ public class EventObject {
     public void setCreatorName(String name){
         this.creatorName = name;
     }
+    public void setChatID(String chatID) { this.chatID = chatID; }
+    public void setActive(boolean status) { this.isActive = status; }
 }

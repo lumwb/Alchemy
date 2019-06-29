@@ -79,7 +79,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //construct event object
 
         //get eventTitle
-        String eventTitle = roomSizeEditText.getText().toString();
+        String eventTitle = eventTitleEditText.getText().toString();
 
         //get maxRoomSize
         int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
@@ -121,7 +121,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
 
         EventObject event = new EventObject(eventTitle, maxRoomSize, eventStartTime, eventDate, dateTime,
-                preferredSex, this.userID, this.name);
+                preferredSex, this.userID, this.name, eventID);
 
         Map<String, EventObject> users = new HashMap<>();
         users.put(eventID, event);
@@ -132,11 +132,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         //push event to event by date
         FirebaseDatabase.getInstance().getReference().child("Date_Events")
-                .child(eventDate).push().setValue(event);
+                .child(eventDate).child(eventID).setValue(event);
 
         //push event to user_events
         FirebaseDatabase.getInstance().getReference().child("User_Events")
-                .child(userID).child(eventDate).push().setValue(event);
+                .child(userID).child(eventDate).child(eventID).setValue(event);
 
 
         //redirect back to myEventPage, will reread all events required

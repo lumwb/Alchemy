@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+ <android.support.v7.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    card_view:cardCornerRadius="0dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    card_view:cardCornerRadius="5dp"
     android:layout_margin="0dp">
 
-    <!--<android.support.constraint.ConstraintLayout-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/txtEventTitle"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="4dp"-->
-            <!--android:layout_marginStart="12dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:textAppearance="@style/TextAppearance.AppCompat.Body2"-->
-            <!--android:textColor="#DE000000"-->
-            <!--app:layout_constraintTop_toTopOf="@+id/avatar_image"-->
-            <!--app:layout_constraintStart_toEndOf="@+id/avatar_image"-->
-            <!--app:layout_constraintEnd_toEndOf="parent" />-->
-
-        <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/avatar_image"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="48dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="48dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_marginTop="12dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_marginStart="12dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:padding="4dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:scaleType="centerCrop"&ndash;&gt;-->
-            <!--&lt;!&ndash;app:srcCompat="@drawable/ic_avatar_40dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;app:layout_constraintBottom_toTopOf="@+id/media_image"&ndash;&gt;-->
-            <!--&lt;!&ndash;app:layout_constraintVertical_chainStyle="packed" />&ndash;&gt;-->
-
-    <!--</android.support.constraint.ConstraintLayout>-->
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/txtName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Host Name: "
-            android:gravity="center_vertical"
-            android:textSize="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
+            android:id="@+id/txtEventName"
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="32dp"
+            android:lineSpacingExtra="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#DE000000"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.163" />
+
 
         <TextView
-            android:id="@+id/txtPreferredSex"
-            android:layout_width="wrap_content"
+            android:id="@+id/staticHostName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Preferred Sex: "
-            android:gravity="center_vertical"
-            android:textSize="10dp"
-            android:layout_below="@id/txtName"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#DE000000"
+            android:text="Host: "
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/txtStartTime"
-            android:layout_width="wrap_content"
+            android:id="@+id/txtHostName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Start Time: "
-            android:textSize="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="150dp"
-            android:layout_alignBaseline="@id/txtName"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#DE000000"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/staticHostName" />
 
         <TextView
-            android:id="@+id/txtMaxRoomSize"
-            android:layout_width="wrap_content"
+            android:id="@+id/txtHour"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Max Size: "
-            android:textSize="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="150dp"
-            android:layout_alignBaseline="@id/txtPreferredSex"/>
+            android:layout_marginStart="332dp"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#DE000000"
+            android:textSize="38dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/txtMinute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="332dp"
+            android:lineSpacingExtra="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#DE000000"
+            android:textSize="38dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtHour" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
 </android.support.v7.widget.CardView>
