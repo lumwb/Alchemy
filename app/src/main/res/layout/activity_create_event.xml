@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyEventsActivity"
-    android:background="@drawable/gradient">
+    android:background="@drawable/gradient"
+    android:orientation="vertical"
+    android:weightSum="1">
 
 
     <FrameLayout
         android:id="@+id/createEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.2">
         <TextView
             android:id="@+id/createEventText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="Create Event"
-            android:textSize="40sp"
+            android:textSize="15sp"
             />
     </FrameLayout>
 
@@ -28,14 +31,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/createEvent"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_weight="0.8">
         <TextView
             android:id="@+id/eventTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Event Title: "
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
 
         <EditText
             android:id="@+id/eventTitleEditText"
@@ -49,21 +52,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eventTitleLinear"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="0.8">
 
         <TextView
             android:id="@+id/roomSizeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Max Room Size: "
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
 
         <EditText
             android:id="@+id/roomSizeEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:ems="5"/>
+            android:ems="8"/>
     </LinearLayout>
 
     <LinearLayout
@@ -71,14 +75,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/roomSize"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="0.18">
 
         <TextView
             android:id="@+id/eventDateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Event Date: "
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
 
         <DatePicker
             android:id="@+id/eventDatePicker"
@@ -95,14 +100,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eventDateLinear"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="0.18">
 
         <TextView
             android:id="@+id/startTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start Time: "
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
 
         <TimePicker
             android:id="@+id/timePicker"
@@ -118,14 +124,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/evenStartTimeLinear"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="0.8">
 
         <TextView
             android:id="@+id/preferredSexText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Preferred Sex: "
-            android:textSize="25sp"/>
+            android:textSize="15sp"/>
 
         <RadioGroup
             android:id="@+id/eventSexRadioGroup"
@@ -163,6 +170,7 @@
         android:ems="7"
         android:text="create"
         android:textColor="#FFFFFF"
+        android:layout_weight="0.05"
         />
 
     <TextView
@@ -171,7 +179,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/createEventButton"
         android:layout_centerHorizontal="true"
-        android:text="Cancel Event"/>
+        android:text="Cancel Event"
+        android:layout_weight="0.05"/>
 
 
-</RelativeLayout>
+</LinearLayout>
