@@ -10,7 +10,7 @@
     <!--the primary colours for our app @jeong-->
     <color name="white">#FFFFFF</color>
     <color name="orange">#B86129</color>
-    <color name="blue">#4472C4</color>
+    <color name="blue">#3232ff </color>
     <color name="grey">#BEBEBE</color>
     <color name="pink">#BF4387</color>
     <color name="green"> #8ecc6e </color>
