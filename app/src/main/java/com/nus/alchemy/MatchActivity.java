@@ -28,7 +28,6 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
     CircleImageView myImage;
     CircleImageView otherImage;
 
-    //c
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
