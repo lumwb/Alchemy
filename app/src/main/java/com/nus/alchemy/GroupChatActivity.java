@@ -52,7 +52,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
-        currentGroupName = getIntent().getExtras().get("groupHost").toString();
+        currentGroupName = getIntent().getExtras().get("currentGroupName").toString();
         groupHost = getIntent().getExtras().get("groupHost").toString();
         initAttributes();
         getUserInfo();

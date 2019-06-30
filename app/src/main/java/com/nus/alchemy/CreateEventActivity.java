@@ -30,7 +30,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth firebaseAuth;
     private EditText eventTitleEditText;
-    private EditText roomSizeEditText;
+    //private EditText roomSizeEditText;
     private TimePicker startTimePicker;
     private DatePicker eventDatePicker;
     private RadioGroup eventSexRadioGroup;
@@ -46,8 +46,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         firebaseAuth = FirebaseAuth.getInstance();
         eventTitleEditText = findViewById(R.id.eventTitleEditText);
-        roomSizeEditText = findViewById(R.id.roomSizeEditText);
-        roomSizeEditText.setFilters(new InputFilter[]{new InputFilterMinMax("2", "20")});
+        //roomSizeEditText = findViewById(R.id.roomSizeEditText);
+        //roomSizeEditText.setFilters(new InputFilter[]{new InputFilterMinMax("2", "20")});
         eventSexRadioGroup = findViewById(R.id.eventSexRadioGroup);
         createEventButton = findViewById(R.id.createEventButton);
         createEventButton.setOnClickListener(this);
@@ -79,10 +79,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //construct event object
 
         //get eventTitle
-        String eventTitle = roomSizeEditText.getText().toString();
+        String eventTitle = eventTitleEditText.getText().toString();
 
         //get maxRoomSize
-        int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
+        //int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
 
         //get preferred sex
         int radioButtonID = eventSexRadioGroup.getCheckedRadioButtonId();
@@ -120,8 +120,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         String eventID = FirebaseDatabase.getInstance().getReference().child("Events").push().getKey();
 
 
-        EventObject event = new EventObject(eventTitle, maxRoomSize, eventStartTime, eventDate, dateTime,
-                preferredSex, this.userID, this.name);
+        EventObject event = new EventObject(eventTitle, eventStartTime, eventDate, dateTime,
+                preferredSex, this.userID, this.name, eventID);
 
         Map<String, EventObject> users = new HashMap<>();
         users.put(eventID, event);
@@ -132,11 +132,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         //push event to event by date
         FirebaseDatabase.getInstance().getReference().child("Date_Events")
-                .child(eventDate).push().setValue(event);
+                .child(eventDate).child(eventID).setValue(event);
 
         //push event to user_events
         FirebaseDatabase.getInstance().getReference().child("User_Events")
-                .child(userID).child(eventDate).push().setValue(event);
+                .child(userID).child(eventDate).child(eventID).setValue(event);
 
 
         //redirect back to myEventPage, will reread all events required

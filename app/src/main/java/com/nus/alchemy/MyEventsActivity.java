@@ -22,8 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.nus.alchemy.Model.EventAdapter;
 import com.nus.alchemy.Model.EventObject;
+import com.nus.alchemy.Model.MyEventAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,10 +100,12 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
             LinearLayoutManager llm = new LinearLayoutManager(this);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             recList.setLayoutManager(llm);
-            EventAdapter eventAdapter = new EventAdapter(this.myEventList);
+            MyEventAdapter eventAdapter = new MyEventAdapter(this.myEventList);
             recList.setAdapter(eventAdapter);
         }
     }
+
+
 
     @Override
     public void onClick(View v) {

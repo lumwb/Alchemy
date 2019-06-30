@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/start_my_event"
+        android:title="Start" />
+    <item
+        android:id="@+id/edit_my_event"
+        android:title="Edit" />
+    <item
+        android:id="@+id/delete_my_event"
+        android:title="Delete" />
+</menu>
