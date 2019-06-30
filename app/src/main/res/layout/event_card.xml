@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
@@ -12,40 +12,42 @@
     android:layout_margin="0dp">
 
     <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="357dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/blue_border_card"
+        android:layout_margin="20dp"
+        android:elevation="30dp">
 
         <TextView
             android:id="@+id/txtEventName"
-            android:layout_width="300dp"
-            android:layout_height="80dp"
+            android:layout_width="247dp"
+            android:layout_height="53dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="25dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="8dp"
             android:lineSpacingExtra="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#DE000000"
-            android:textSize="25sp"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.613"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.163" />
+            app:layout_constraintVertical_bias="0.414" />
 
 
         <TextView
             android:id="@+id/staticHostName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="39dp"
+            android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:lineSpacingExtra="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#DE000000"
             android:text="Host: "
-            android:textSize="15dp"
+            android:textColor="@color/pink"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -54,38 +56,37 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:lineSpacingExtra="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#DE000000"
-            android:textSize="15dp"
+            android:textColor="@color/blue"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/staticHostName" />
+            app:layout_constraintStart_toEndOf="@+id/staticHostName"
+            app:layout_constraintTop_toBottomOf="@+id/txtEventName" />
 
         <TextView
             android:id="@+id/txtHour"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="332dp"
-            android:layout_marginTop="8dp"
-            android:lineSpacingExtra="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#DE000000"
-            android:textSize="38dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="136dp"
+            android:layout_marginBottom="4dp"
+            android:text="24"
+            android:textColor="@color/blue"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtHostName" />
 
         <TextView
             android:id="@+id/txtMinute"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="332dp"
-            android:lineSpacingExtra="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#DE000000"
-            android:textSize="38dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtHour" />
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="00"
+            android:textColor="@color/blue"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtHour" />
 
 
     </android.support.constraint.ConstraintLayout>
