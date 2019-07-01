@@ -147,6 +147,14 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
         FirebaseDatabase.getInstance().getReference().child("Date_Events")
                 .child(todayDate).child(eventID).child("chatID").setValue(groupKey);
 
+        //set events active status to true
+        FirebaseDatabase.getInstance().getReference().child("Events")
+                .child(eventID).child("active").setValue(true);
+        FirebaseDatabase.getInstance().getReference().child("User_Events")
+                .child(userID).child(todayDate).child(eventID).child("active").setValue(true);
+        FirebaseDatabase.getInstance().getReference().child("Date_Events")
+                .child(todayDate).child(eventID).child("active").setValue(true);
+
         //set default values for new group
         groupRef.child(groupKey).child("isOpen").setValue(true);
         groupRef.child(groupKey).child("Host").setValue(userID);
