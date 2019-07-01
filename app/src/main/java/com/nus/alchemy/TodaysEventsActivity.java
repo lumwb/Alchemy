@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +29,6 @@ public class TodaysEventsActivity extends AppCompatActivity
         implements View.OnClickListener{
 
     private BottomNavigationView bottomNavigationView;
-    private TextView tempJoinGroup;
     private String userSex;
     private String userID;
     private ArrayList<EventObject> eventList;
@@ -94,9 +92,6 @@ public class TodaysEventsActivity extends AppCompatActivity
                         //log error
                     }
                 });
-
-        tempJoinGroup = (TextView) findViewById(R.id.joinGroup);
-        tempJoinGroup.setOnClickListener(this);
     }
 
     //custom method to build RecyclerView
@@ -131,27 +126,7 @@ public class TodaysEventsActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        if (v == tempJoinGroup) {
-
-            //weiboons hash code babbyyy
-            String weiboonKey = "P5VGhmdxLhZmxnwlySYAtsgWTL43";
-
-            //get the td of the chat from the card
-            //gmailPhone
-            String tempChatHost = "P5VGhmdxLhZmxnwlySYAtsgWTL43";
-            String currentUserId = FirebaseAuth.getInstance().getUid();
-            //technically the id of the chat should be generated at event creation but temp use chathost id
-            DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
-            groupRef.child(tempChatHost).child("isOpen").setValue(true);
-            groupRef.child(tempChatHost).child("Host").setValue("P5VGhmdxLhZmxnwlySYAtsgWTL43");
-            groupRef.child(tempChatHost).child("Participants").child(currentUserId).setValue(true);
-            Intent intent = new Intent(getApplicationContext(), GroupChatActivity.class);
-            intent.putExtra("groupHost", "P5VGhmdxLhZmxnwlySYAtsgWTL43");
-
-
-            startActivity(intent);
-            finish();
-        }
+       
     }
 
     private void setUpBottomNavBar() {
