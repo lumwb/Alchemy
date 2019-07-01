@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient">
+
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="1dp"
+        android:id="@+id/main_container">
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintTop_toBottomOf="@+id/main_container">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomNavigationView_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:menu="@menu/bottom_nav_menu"
+            />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
