@@ -126,7 +126,7 @@ public class TodaysEventsActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-       
+
     }
 
     private void setUpBottomNavBar() {
