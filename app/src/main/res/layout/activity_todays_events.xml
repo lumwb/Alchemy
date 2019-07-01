@@ -1,74 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TodaysEventsActivity"
-    android:background="@drawable/gradient">
+    android:background="@color/white"
+    tools:context=".TodaysEventsActivity">
 
-    <FrameLayout
-        android:id="@+id/matchtemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tempMatchTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="go to match temp"/>
-    </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/myEvents"
+    <TextView
+        android:id="@+id/todaysEventsHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/matchtemp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-        <TextView
-            android:id="@+id/myEventsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text=" Today's Events"
-            android:textSize="40dp"
-            android:drawableLeft="@drawable/ic_todays_event_30dp"
-            />
-    </FrameLayout>
+        android:layout_margin="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:drawableLeft="@drawable/ic_todays_event_30dp"
+        android:text=" Today's Events"
+        android:textSize="40dp"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf    ="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline19" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/myEvents"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_above="@+id/myEventsBottomBar"
-        />
+        android:layout_below="@+id/myEvents"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline20"
+        app:layout_constraintVertical_bias="0.496" />
 
 
     <TextView
         android:id="@+id/joinGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
         android:text="temp JOIN GROUP CHAT"
-        android:layout_centerVertical="true"/>
+        android:textColor="@color/pink"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline19"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:id="@+id/bottomBar"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:menu="@menu/bottom_nav_menu"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.06" />
 
-            />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
 
-    </RelativeLayout>
 
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

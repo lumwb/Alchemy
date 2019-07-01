@@ -12,8 +12,11 @@ import android.widget.TextView;
 
 import com.nus.alchemy.ChatActivity;
 import com.nus.alchemy.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
 
@@ -51,6 +54,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
                 v.getContext().startActivity(intent);
             }
         });
+        Picasso.get().load(otherUserProfImg).placeholder(R.drawable.icon).into(holder.mChatProfileImage);
     }
 
     @Override
@@ -62,10 +66,12 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
     public class ChatListViewHolder extends RecyclerView.ViewHolder{
         public TextView mTitle;
         public LinearLayout mLayout;
+        public CircleImageView mChatProfileImage;
         public ChatListViewHolder(View view) {
             super(view);
             mTitle = view.findViewById(R.id.titleTextView);
             mLayout = view.findViewById(R.id.layout);
+            mChatProfileImage = view.findViewById(R.id.chatProfileImage);
         }
     }
 }

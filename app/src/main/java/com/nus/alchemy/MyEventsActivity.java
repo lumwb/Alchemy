@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +31,6 @@ import java.util.Date;
 public class MyEventsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private BottomNavigationView bottomNavigationView;
-    private TextView tempGroupMatch;
     private Button newEventButton;
     private String userID;
     private ArrayList<EventObject> myEventList;
@@ -48,9 +46,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
 
         //get userID
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        tempGroupMatch = (TextView) findViewById(R.id.createGrouptemp);
-        tempGroupMatch.setOnClickListener(this);
         newEventButton = (Button) findViewById(R.id.newEventButton);
         newEventButton.setOnClickListener(this);
 
@@ -109,9 +104,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == tempGroupMatch) {
-            createNewGroup();
-        }
         if (v == newEventButton) {
             //redirect to createEventPage
             Intent goToCreateNewEvent = new Intent(getApplicationContext(), CreateEventActivity.class);

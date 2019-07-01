@@ -3,16 +3,26 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="white">#FFFFFF</color>
     <color name="icon_orange">#B86129</color>
     <color name="icon_blue">#4472C4</color>
     <color name="icon_grey">#767171</color>
-    <color name="pink">#BF4387</color>
 
     <!--the primary colours for our app @jeong-->
-    <color name="primary_white">#FFFFFF</color>
-    <color name="primary_orange">#B86129</color>
-    <color name="primary_blue">#4472C4</color>
-    <color name="primary_grey">#767171</color>
-    <color name="primary_pink">#BF4387</color>
+    <color name="white">#FFFFFF</color>
+    <color name="orange">#B86129</color>
+    <color name="blue">#3232ff </color>
+    <color name="grey">#BEBEBE</color>
+    <color name="pink">#BF4387</color>
+    <color name="green"> #005900 </color>
+
+    <!--<color name="grey2"> #222222 </color>-->
+    <!--<color name="grey3"> #262626 </color>-->
+    <!--<color name="grey4"> #303030 </color>-->
+    <!--<color name="grey5"> #343434 </color>-->
+    <!--<color name="blue">  #b2b2ff</color>-->
+    <!--<color name="red"> #ff9999   </color>-->
+    <!--<color name="yellow"> #d6b932 </color>-->
+    <!--<color name="purple"> #d9a5f9</color>-->
+    <!--<color name="white"> #F6F1F1 </color>-->
+
 </resources>

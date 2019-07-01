@@ -30,7 +30,6 @@ public class TodaysEventsActivity extends AppCompatActivity
         implements View.OnClickListener{
 
     private BottomNavigationView bottomNavigationView;
-    private TextView tempMatchTextView;
     private TextView tempJoinGroup;
     private String userSex;
     private String userID;
@@ -46,9 +45,6 @@ public class TodaysEventsActivity extends AppCompatActivity
 
         //init eventList
         eventList = new ArrayList<>();
-
-        tempMatchTextView = (TextView) findViewById(R.id.tempMatchTextView);
-        tempMatchTextView.setOnClickListener(this);
 
         //get userID
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
