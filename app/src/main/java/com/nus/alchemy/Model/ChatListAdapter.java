@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,16 +17,52 @@ import com.nus.alchemy.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
+public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> implements Filterable {
 
     private ArrayList<ChatObject> chatList;
+    private ArrayList<ChatObject> chatListFull;
 
     public ChatListAdapter(ArrayList<ChatObject> chatList) {
         this.chatList = chatList;
+        this.chatListFull = new ArrayList<>(chatList);
     }
+
+    @Override
+    public Filter getFilter() {
+        return stockFilter;
+    }
+
+    private Filter stockFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            LinkedList<ChatObject> filteredList = new LinkedList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(chatListFull);
+            }
+            else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (ChatObject item: chatListFull) {
+                    if (item.getOtherUserName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            chatList.clear();
+            chatList.addAll((LinkedList<ChatObject>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     @NonNull
     @Override
