@@ -96,7 +96,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         }
         if (v == chooseSuitorButton) {
             Intent intent = new Intent(getApplicationContext(), SuitorActivity.class);
-            intent.putExtra("groupId", groupHost);
+            intent.putExtra("groupId", currentGroupName);
             startActivity(intent);
             finish();
             return;
