@@ -3,9 +3,8 @@ package com.nus.alchemy;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,15 +20,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
+public class UpdateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private EditText eventTitleEditText;
@@ -37,35 +35,86 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private TimePicker startTimePicker;
     private DatePicker eventDatePicker;
     private RadioGroup eventSexRadioGroup;
-    private Button createEventButton;
+    private RadioButton maleButton;
+    private RadioButton femaleButton;
+    private Button updateEventButton;
     private TextView cancelEventTextView;
     private String userID;
     private String name;
+    private String eventID;
+    private EventObject eventToUpdate;
+    private final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat TimeFormat = new SimpleDateFormat("HH:mm");
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.activity_update_event);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //get event from Firebase
+        eventID = getIntent().getStringExtra("eventID");
+        Query ref = FirebaseDatabase.getInstance().getReference().child("Events")
+                .child(eventID);
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        eventToUpdate = dataSnapshot.getValue(EventObject.class);
+                        bindElements();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void bindElements() {
+        //set default values for  each widget
         eventTitleEditText = findViewById(R.id.eventTitleEditText);
+        eventTitleEditText.setText(eventToUpdate.getEventTitle());
+
         eventSexRadioGroup = findViewById(R.id.eventSexRadioGroup);
-        createEventButton = findViewById(R.id.createEventButton);
-        createEventButton.setOnClickListener(this);
-        cancelEventTextView = findViewById(R.id.cancelEventTextView);
-        cancelEventTextView.setOnClickListener(this);
+        maleButton = findViewById(R.id.eventMaleRadioButton);
+        femaleButton = findViewById(R.id.eventFemaleRadioButton);
+        if (eventToUpdate.getPreferredSex().equals("Male")) {
+            maleButton.setChecked(true);
+        } else {
+            femaleButton.setChecked(true);
+        }
+
         eventDatePicker = findViewById(R.id.eventDatePicker);
-        eventDatePicker.setMinDate(System.currentTimeMillis() - 1000);
+        String eventDateString = eventToUpdate.getEventDate();
+        try{
+            eventDatePicker.setMinDate(dateTimeFormat.parse(eventDateString).getTime());
+        }
+        catch (java.text.ParseException e) {}
+
+
         startTimePicker= findViewById(R.id.timePicker);
         startTimePicker.setIs24HourView(true);
+        String startTime = eventToUpdate.getStartTime();
+        startTimePicker.setHour(Integer.parseInt(startTime.substring(0, 2)));
+        startTimePicker.setMinute(Integer.parseInt(startTime.substring(3)));
+
+        updateEventButton = findViewById(R.id.updateEventButton);
+        updateEventButton.setOnClickListener(this);
+        cancelEventTextView = findViewById(R.id.cancelEventTextView);
+        cancelEventTextView.setOnClickListener(this);
+
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getNameFromUserID(userID);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == createEventButton) {
-            createEvent();
+        if (v == updateEventButton) {
+            updateEvent();
 
         }
         if (v == cancelEventTextView) {
@@ -76,7 +125,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void createEvent() {
+    public void updateEvent() {
         //construct event object
 
         //get data from widgets
@@ -136,15 +185,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             return;
         }
 
-        //push event event child
-        String eventID = FirebaseDatabase.getInstance().getReference().child("Events").push().getKey();
-
-
         EventObject event = new EventObject(eventTitle, eventStartTime, eventDate, dateTime,
                 preferredSex, this.userID, this.name, eventID);
 
-        Map<String, EventObject> users = new HashMap<>();
-        users.put(eventID, event);
 
         FirebaseDatabase.getInstance().getReference().child("Events").child(eventID).setValue(event);
 
@@ -157,7 +200,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //push event to user_events
         FirebaseDatabase.getInstance().getReference().child("User_Events")
                 .child(userID).child(eventDate).child(eventID).setValue(event);
-
 
         //redirect back to myEventPage, will reread all events required
         Intent toMyEvents = new Intent(getApplicationContext(), MyEventsActivity.class);
@@ -183,30 +225,3 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 }
 
-class InputFilterMinMax implements InputFilter {
-    private int min, max;
-
-    public InputFilterMinMax(int min, int max) {
-        this.min = min;
-        this.max = max;
-    }
-
-    public InputFilterMinMax(String min, String max) {
-        this.min = Integer.parseInt(min);
-        this.max = Integer.parseInt(max);
-    }
-
-    @Override
-    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        try {
-            int input = Integer.parseInt(dest.toString() + source.toString());
-            if (isInRange(min, max, input))
-                return null;
-        } catch (NumberFormatException nfe) { }
-        return "";
-    }
-
-    private boolean isInRange(int a, int b, int c) {
-        return b > a ? c >= a && c <= b : c >= b && c <= a;
-    }
-}

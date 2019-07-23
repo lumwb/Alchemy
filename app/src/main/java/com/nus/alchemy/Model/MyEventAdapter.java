@@ -10,13 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nus.alchemy.GroupChatActivity;
 import com.nus.alchemy.R;
+import com.nus.alchemy.UpdateEventActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -118,7 +118,10 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
                             createNewGroup(viewHolderEvent);
                             break;
                         case R.id.edit_my_event:
-                            Toast.makeText(context, " edit functionality not yet added ", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(context, UpdateEventActivity.class);
+                            intent.putExtra("eventID", viewHolderEvent.getEventID());
+                            context.startActivity(intent);
+                            ((Activity)context).finish();
                             break;
                         case R.id.delete_my_event:
                             deleteEvent(viewHolderEvent);
