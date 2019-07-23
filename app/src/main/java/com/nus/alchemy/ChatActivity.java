@@ -15,9 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -105,6 +108,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void uploadMediaToStorage(String messageID, final DatabaseReference newMessageDb, final Map newMessageMap) {
+        progressDialog.setMessage("Sending Media...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         for (String mediaURI : mediaURIList) {
             String mediaID = newMessageDb.child("media").push().getKey();
             mediaIdList.add(mediaID);
@@ -129,11 +135,22 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateDatabaseWithNewMessage(DatabaseReference newMessageDb, Map newMessageMap) {
-        newMessageDb.updateChildren(newMessageMap);
+        newMessageDb.updateChildren(newMessageMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                progressDialog.dismiss();
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Media sent!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         mMessage.setText(null);
         mediaURIList.clear();
         mediaIdList.clear();
-        totalMediaUploaded = 0; //self in
+        totalMediaUploaded = 0;
         mMediaAdapter.notifyDataSetChanged();
     }
 

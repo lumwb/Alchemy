@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -33,17 +34,34 @@ public class MyChatsActivity extends AppCompatActivity {
     ArrayList<ChatObject> chatList;
     private StorageReference userProfileImagesRef;
     private String currentUserID;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_chats);
         chatList = new ArrayList<>();
+        searchView = findViewById(R.id.searchUsers);
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
         setUpBottomNavBar();
-        initRecyclerView();
         getUserChatList();
+        setUpSearchBar();
+    }
+
+    public void setUpSearchBar() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ((ChatListAdapter) mChatListAdapter).getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 
     private void getUserChatList() {
@@ -70,9 +88,9 @@ public class MyChatsActivity extends AppCompatActivity {
                             continue;
                         }
                         chatList.add(chatObject);
-                        mChatListAdapter.notifyDataSetChanged();
                     }
                 }
+                initRecyclerView();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

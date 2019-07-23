@@ -53,6 +53,9 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
         currentGroupName = getIntent().getExtras().get("currentGroupName").toString();
+
+        currentGroupName = "Jeong's Activity";
+
         groupHost = getIntent().getExtras().get("groupHost").toString();
         initAttributes();
         getUserInfo();
@@ -143,32 +146,12 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
 
 
     private void DisplayMessages(DataSnapshot dataSnapshot) {
-        //Iterator iterator = dataSnapshot.child("Messages").getChildren().iterator();
-//        while (iterator.hasNext()) {
-//            String chatDate = ((DataSnapshot) iterator.next()).getValue().toString();
-//            String chatMessage = ((DataSnapshot) iterator.next()).getValue().toString();
-//            String chatName = ((DataSnapshot) iterator.next()).getValue().toString();
-//            String chatTime = ((DataSnapshot) iterator.next()).getValue().toString();
-//            displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n\n");
-//            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//        }
-
-//        for (DataSnapshot child : dataSnapshot.child("Messages").getChildren()) {
-//            String chatDate = child.child("date").getValue().toString();
-//            String chatMessage = child.child("message").getValue().toString();
-//            String chatName = child.child("name").getValue().toString();
-//            String chatTime = child.child("time").getValue().toString();
-//            displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n\n");
-//            mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//        }
-
         String chatDate = dataSnapshot.child("date").getValue().toString();
         String chatMessage = dataSnapshot.child("message").getValue().toString();
         String chatName = dataSnapshot.child("name").getValue().toString();
         String chatTime = dataSnapshot.child("time").getValue().toString();
         displayTextMessages.append(chatName+ ":\n" + chatMessage + "\n" + chatTime + " " + chatDate + "\n\n\n\n");
         mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-
     }
 
     private void getUserInfo() {
