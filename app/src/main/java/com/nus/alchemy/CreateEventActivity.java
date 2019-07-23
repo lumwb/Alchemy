@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nus.alchemy.Model.EventObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,19 +81,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     public void createEvent() {
         //construct event object
 
-        //get eventTitle
+        //get data from widgets
         String eventTitle = eventTitleEditText.getText().toString();
-
-        //get maxRoomSize
-        //int maxRoomSize = Integer.parseInt(roomSizeEditText.getText().toString());
-
-        //get preferred sex
         int radioButtonID = eventSexRadioGroup.getCheckedRadioButtonId();
-        RadioButton rb = findViewById(radioButtonID);
-        final String preferredSex = rb.getText().toString();
-
-        //get time
-        String eventStartTime = "";
         int hour, minute;
         if (Build.VERSION.SDK_INT >= 23 ){
             hour = startTimePicker.getHour();
@@ -100,14 +93,18 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             hour = startTimePicker.getCurrentHour();
             minute = startTimePicker.getCurrentMinute();
         }
-        String formatted_hour = String.format("%02d", hour);
-        String formatted_minute = String.format("%02d", minute);
-        eventStartTime = formatted_hour + ":" + formatted_minute;
-
-        //get date - follow ISO8601 standard
         int day = eventDatePicker.getDayOfMonth();
         int month = eventDatePicker.getMonth() + 1;
         int year =  eventDatePicker.getYear();
+        RadioButton rb = findViewById(radioButtonID);
+        final String preferredSex = rb.getText().toString();
+
+        //format time
+        String formatted_hour = String.format("%02d", hour);
+        String formatted_minute = String.format("%02d", minute);
+        String eventStartTime = formatted_hour + ":" + formatted_minute;
+
+        //format - follow ISO8601 standard
         String formatted_day = String.format("%02d", day);
         String formatted_month = String.format("%02d", month);
         String eventDate = year + "-" + formatted_month + "-" + formatted_day;
@@ -115,6 +112,31 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //construct complete dateTime in ISO8601 format
         String dateTime = eventDate + "T" + eventStartTime;
 
+        //validate fields
+        boolean validInput = true;
+        //eventTitle validation
+        if(eventTitle.equalsIgnoreCase("") || eventTitle.isEmpty()) {
+            validInput = false;
+            Toast.makeText(this, "event title cannot be blank!",
+                    Toast.LENGTH_LONG).show();
+            eventTitleEditText.setError("please enter event title");
+        }
+        //eventDateValidation
+        Date currentDate = new Date();
+        final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        Date eventDateTime = null;
+        try {
+            eventDateTime = dateTimeFormat.parse(dateTime);
+        } catch (java.text.ParseException e) {}
+        if (currentDate.compareTo(eventDateTime) > 0) {
+            validInput = false;
+            Toast.makeText(this, "Event date cannot be in the past!",
+                    Toast.LENGTH_LONG).show();
+        }
+        if (!validInput) {
+            //redirect to itself
+            return;
+        }
 
         //push event event child
         String eventID = FirebaseDatabase.getInstance().getReference().child("Events").push().getKey();
