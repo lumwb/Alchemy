@@ -92,7 +92,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
                 v.getContext().startActivity(intent);
             }
         });
-        Picasso.get().load(otherUserProfImg).placeholder(R.drawable.icon).into(holder.mChatProfileImage);
+        if (!otherUserProfImg.equals("")) {
+            Picasso.get().load(otherUserProfImg).placeholder(R.drawable.icon).into(holder.mChatProfileImage);
+        }
     }
 
     @Override
