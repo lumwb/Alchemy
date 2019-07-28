@@ -46,6 +46,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private String groupHost;
     private String currentDate;
     private String currentTime;
+    private String eventID;
     private String eventName;
     private Button chooseSuitorButton;
     private Button closeDoorButton;
@@ -58,6 +59,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         currentGroupName = getIntent().getExtras().get("currentGroupName").toString();
         groupHost = getIntent().getExtras().get("groupHost").toString();
         eventName = getIntent().getExtras().get("eventName").toString();
+        eventID = getIntent().getExtras().get("eventID").toString();
         initAttributes();
         getUserInfo();
     }
@@ -101,6 +103,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         if (v == chooseSuitorButton) {
             Intent intent = new Intent(getApplicationContext(), SuitorActivity.class);
             intent.putExtra("groupId", currentGroupName);
+            intent.putExtra("eventID", eventID);
             startActivity(intent);
             finish();
             return;
@@ -114,14 +117,12 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
                     .child(currentUserID).child(todayDate).child(currentGroupName).child("active").setValue(false);
             FirebaseDatabase.getInstance().getReference().child("Date_Events")
                     .child(todayDate).child(currentGroupName).child("active").setValue(false);
-
             Toast.makeText(this, "The door is now closed. Enjoy!",
                     Toast.LENGTH_LONG).show();
         }
         if (v == leaveButton) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String todayDate = dateFormat.format(new Date());
-            //delete event after host leaves the event
             FirebaseDatabase.getInstance().getReference().child("Events")
                     .child(currentGroupName).removeValue();
             FirebaseDatabase.getInstance().getReference().child("User_Events")

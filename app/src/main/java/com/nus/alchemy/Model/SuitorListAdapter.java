@@ -19,9 +19,11 @@ import java.util.ArrayList;
 public class SuitorListAdapter extends RecyclerView.Adapter<SuitorListAdapter.SuitorListViewHolder>{
 
     private ArrayList<SuitorObject> suitorList;
+    private String eventID;
 
-    public SuitorListAdapter(ArrayList<SuitorObject> suitorList) {
+    public SuitorListAdapter(ArrayList<SuitorObject> suitorList, String eventID) {
         this.suitorList = suitorList;
+        this.eventID = eventID;
     }
 
     @NonNull
@@ -47,6 +49,7 @@ public class SuitorListAdapter extends RecyclerView.Adapter<SuitorListAdapter.Su
                 String user2 = suitorId;
                 intent.putExtra("user1", user1);
                 intent.putExtra("user2", user2);
+                intent.putExtra("eventID", eventID);
                 v.getContext().startActivity(intent);
             }
         });
