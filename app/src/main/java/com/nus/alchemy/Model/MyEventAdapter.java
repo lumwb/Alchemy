@@ -170,6 +170,7 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
         Intent intent = new Intent(context, GroupChatActivity.class);
         intent.putExtra("groupHost", userID);
         intent.putExtra("currentGroupName", groupKey);
+        intent.putExtra("eventName", event.getEventTitle());
         context.startActivity(intent);
         ((Activity)context).finish();
     }
