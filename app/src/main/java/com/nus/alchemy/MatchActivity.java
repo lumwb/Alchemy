@@ -15,6 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MatchActivity extends AppCompatActivity implements View.OnClickListener {
@@ -25,6 +28,7 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
     String otherUserID;
     String image1;
     String image2;
+    String eventID;
     CircleImageView myImage;
     CircleImageView otherImage;
 
@@ -39,6 +43,7 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
         closeButton.setOnClickListener(this);
         myID = getIntent().getExtras().get("user1").toString();
         otherUserID = getIntent().getExtras().get("user2").toString();
+        eventID = getIntent().getExtras().get("eventID").toString();
         myImage = findViewById(R.id.myImage);
         otherImage = findViewById(R.id.otherImage);
 
@@ -50,12 +55,12 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                image1 = dataSnapshot.child(myID).child("Image").getValue().toString();
-                image2 = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
-                if (!image1.equals("")) {
+                if (dataSnapshot.child(myID).hasChild("Image")) {
+                    image1 = dataSnapshot.child(myID).child("Image").getValue().toString();
                     Picasso.get().load(image1).placeholder(R.drawable.icon).into(myImage);
                 }
-                if (!image2.equals("")) {
+                if (dataSnapshot.child(otherUserID).hasChild("Image")) {
+                    image2 = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
                     Picasso.get().load(image2).placeholder(R.drawable.icon).into(otherImage);
                 }
             }
@@ -83,5 +88,13 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
             finish();
             return;
         }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = dateFormat.format(new Date());
+        FirebaseDatabase.getInstance().getReference().child("Events")
+                .child(eventID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("User_Events")
+                .child(myID).child(todayDate).child(eventID).removeValue();
+        FirebaseDatabase.getInstance().getReference().child("Date_Events")
+                .child(todayDate).child(eventID).removeValue();
     }
 }

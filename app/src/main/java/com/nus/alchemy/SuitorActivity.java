@@ -22,12 +22,16 @@ public class SuitorActivity extends AppCompatActivity {
     private RecyclerView mSuitorList;
     private RecyclerView.Adapter mSuitorListAdapter;
     private RecyclerView.LayoutManager mSuitorListLayoutManager;
+    private String groupId;
+    private String eventID;
     ArrayList<SuitorObject> suitorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suitor);
+        groupId = getIntent().getExtras().get("groupId").toString();
+        eventID = getIntent().getExtras().get("eventID").toString();
         suitorList = new ArrayList<>();
         initRecyclerView();
         getUserSuitorList();
@@ -39,12 +43,11 @@ public class SuitorActivity extends AppCompatActivity {
         mSuitorList.setHasFixedSize(false);
         mSuitorListLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
         mSuitorList.setLayoutManager(mSuitorListLayoutManager);
-        mSuitorListAdapter = new SuitorListAdapter(suitorList);
+        mSuitorListAdapter = new SuitorListAdapter(suitorList, eventID);
         mSuitorList.setAdapter(mSuitorListAdapter);
     }
 
     private void getUserSuitorList() {
-        final String groupId = getIntent().getExtras().get("groupId").toString();
         final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override

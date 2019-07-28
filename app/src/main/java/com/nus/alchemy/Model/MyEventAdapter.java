@@ -171,6 +171,7 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
         intent.putExtra("groupHost", userID);
         intent.putExtra("currentGroupName", groupKey);
         intent.putExtra("eventName", event.getEventTitle());
+        intent.putExtra("eventID", event.getEventID());
         context.startActivity(intent);
         ((Activity)context).finish();
     }
