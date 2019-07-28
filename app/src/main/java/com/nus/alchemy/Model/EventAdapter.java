@@ -108,7 +108,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 ((Activity)context).finish();
             } else {
                 //chat not avail just toast
-                Toast toast = Toast.makeText(context, " Chat Room Not Available Yet.\n Please be patient", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, " Chat Room Not Available.", Toast.LENGTH_SHORT);
                 TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                 if( v != null) v.setGravity(Gravity.CENTER);
                 toast.show();

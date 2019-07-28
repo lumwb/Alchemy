@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -104,9 +105,27 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         if (v == closeDoorButton) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String todayDate = dateFormat.format(new Date());
+            //set current event to not active
+            FirebaseDatabase.getInstance().getReference().child("Events")
+                    .child(currentGroupName).child("active").setValue(false);
+            FirebaseDatabase.getInstance().getReference().child("User_Events")
+                    .child(currentUserID).child(todayDate).child(currentGroupName).child("active").setValue(false);
+            FirebaseDatabase.getInstance().getReference().child("Date_Events")
+                    .child(todayDate).child(currentGroupName).child("active").setValue(false);
 
         }
         if (v == leaveButton) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String todayDate = dateFormat.format(new Date());
+            //delete event after host leaves the event
+            FirebaseDatabase.getInstance().getReference().child("Events")
+                    .child(currentGroupName).removeValue();
+            FirebaseDatabase.getInstance().getReference().child("User_Events")
+                    .child(currentUserID).child(todayDate).child(currentGroupName).removeValue();
+            FirebaseDatabase.getInstance().getReference().child("Date_Events")
+                    .child(todayDate).child(currentGroupName).removeValue();
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
             finish();
