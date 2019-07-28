@@ -33,7 +33,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private FirebaseAuth firebaseAuth;
     private EditText eventTitleEditText;
-    //private EditText roomSizeEditText;
     private TimePicker startTimePicker;
     private DatePicker eventDatePicker;
     private RadioGroup eventSexRadioGroup;

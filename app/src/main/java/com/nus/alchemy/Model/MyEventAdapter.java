@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nus.alchemy.GroupChatActivity;
+import com.nus.alchemy.MyEventsActivity;
 import com.nus.alchemy.R;
 import com.nus.alchemy.UpdateEventActivity;
 
@@ -28,7 +29,6 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
     public interface OnItemSelectedListener {
 
         void onSelected(EventObject object);
-
         void onMenuAction(EventObject object, MenuItem item);
     }
 
@@ -68,7 +68,6 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
         eventViewHolder.vHostName.setText(currentEvent.getCreatorName());
         eventViewHolder.vTxtHour.setText(hourTimeWithColon);
         eventViewHolder.vTxtMinute.setText(minuteTime);
-
     }
 
     @Override
@@ -125,6 +124,9 @@ public class MyEventAdapter extends RecyclerView.Adapter<MyEventAdapter.MyEventV
                             break;
                         case R.id.delete_my_event:
                             deleteEvent(viewHolderEvent);
+                            Intent reloadEvents = new Intent(context, MyEventsActivity.class);
+                            context.startActivity(reloadEvents);
+                            ((Activity) context).finish();
                             break;
                     }
                     return false;

@@ -11,10 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -100,8 +97,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-
     @Override
     public void onClick(View v) {
         if (v == newEventButton) {
@@ -111,24 +106,6 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
             finish();
             return;
         }
-    }
-
-
-    private void createNewGroup() {
-        String key = FirebaseDatabase.getInstance().getReference().child("Groups").push().getKey();
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(key).setValue(true);
-    }
-
-    private void CreateNewGroup(String groupName) {
-        FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName).setValue("")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Created group successfully", Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
     }
 
     private void setUpBottomNavBar() {
@@ -163,4 +140,3 @@ public class MyEventsActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 }
-
