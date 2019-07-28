@@ -50,12 +50,12 @@ public class MatchActivity extends AppCompatActivity implements View.OnClickList
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                image1 = dataSnapshot.child(myID).child("Image").getValue().toString();
-                image2 = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
-                if (!image1.equals("")) {
+                if (dataSnapshot.child(myID).hasChild("Image")) {
+                    image1 = dataSnapshot.child(myID).child("Image").getValue().toString();
                     Picasso.get().load(image1).placeholder(R.drawable.icon).into(myImage);
                 }
-                if (!image2.equals("")) {
+                if (dataSnapshot.child(otherUserID).hasChild("Image")) {
+                    image2 = dataSnapshot.child(otherUserID).child("Image").getValue().toString();
                     Picasso.get().load(image2).placeholder(R.drawable.icon).into(otherImage);
                 }
             }
