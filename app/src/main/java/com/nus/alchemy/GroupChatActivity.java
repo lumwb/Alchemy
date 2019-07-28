@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -107,7 +108,6 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         if (v == closeDoorButton) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String todayDate = dateFormat.format(new Date());
-            //set current event to not active
             FirebaseDatabase.getInstance().getReference().child("Events")
                     .child(currentGroupName).child("active").setValue(false);
             FirebaseDatabase.getInstance().getReference().child("User_Events")
@@ -115,6 +115,8 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             FirebaseDatabase.getInstance().getReference().child("Date_Events")
                     .child(todayDate).child(currentGroupName).child("active").setValue(false);
 
+            Toast.makeText(this, "The door is now closed. Enjoy!",
+                    Toast.LENGTH_LONG).show();
         }
         if (v == leaveButton) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
