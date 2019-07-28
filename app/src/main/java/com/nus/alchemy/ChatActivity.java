@@ -140,7 +140,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task task) {
                 progressDialog.dismiss();
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Media sent!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
