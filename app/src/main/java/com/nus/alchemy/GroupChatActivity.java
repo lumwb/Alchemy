@@ -44,6 +44,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private String groupHost;
     private String currentDate;
     private String currentTime;
+    private String eventName;
     private Button chooseSuitorButton;
     private Button closeDoorButton;
     private Button leaveButton;
@@ -54,6 +55,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_group_chat);
         currentGroupName = getIntent().getExtras().get("currentGroupName").toString();
         groupHost = getIntent().getExtras().get("groupHost").toString();
+        eventName = getIntent().getExtras().get("eventName").toString();
         initAttributes();
         getUserInfo();
     }
@@ -169,7 +171,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private void initAttributes() {
         mToolbar = (Toolbar) findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(currentGroupName);
+        getSupportActionBar().setTitle(eventName);
         SendMessageButton = (ImageButton) findViewById(R.id.send_message_button);
         SendMessageButton.setOnClickListener(this);
         userMessageInput = (EditText) findViewById(R.id.input_group_message);
