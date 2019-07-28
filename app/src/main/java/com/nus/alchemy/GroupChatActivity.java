@@ -41,6 +41,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private DatabaseReference userRef;
     private DatabaseReference groupMessagesRef;
     private DatabaseReference groupMessageKeyRef;
+    private DatabaseReference eventRef;
     private String currentUserID;
     private String currentUserName;
     private String groupHost;
@@ -48,6 +49,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     private String currentTime;
     private String eventID;
     private String eventName;
+    private String todayDate;
     private Button chooseSuitorButton;
     private Button closeDoorButton;
     private Button leaveButton;
@@ -67,6 +69,40 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onStart() {
         super.onStart();
+
+        eventRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                //listen for event to be removed
+                if (dataSnapshot.exists()) {
+                    if (!dataSnapshot.hasChild(eventID)){
+                        displayEventClosed();
+                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         groupMessagesRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -109,8 +145,6 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         if (v == closeDoorButton) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String todayDate = dateFormat.format(new Date());
             FirebaseDatabase.getInstance().getReference().child("Events")
                     .child(currentGroupName).child("active").setValue(false);
             FirebaseDatabase.getInstance().getReference().child("User_Events")
@@ -121,8 +155,6 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
                     Toast.LENGTH_LONG).show();
         }
         if (v == leaveButton) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String todayDate = dateFormat.format(new Date());
             FirebaseDatabase.getInstance().getReference().child("Events")
                     .child(currentGroupName).removeValue();
             FirebaseDatabase.getInstance().getReference().child("User_Events")
@@ -191,6 +223,8 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
 
 
     private void initAttributes() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        todayDate = dateFormat.format(new Date());
         mToolbar = (Toolbar) findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(eventName);
@@ -203,6 +237,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
         currentUserID = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         groupMessagesRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Messages");
+        eventRef = FirebaseDatabase.getInstance().getReference().child("Events");
         chooseSuitorButton = (Button) findViewById(R.id.chooseSuitorButton);
         closeDoorButton = (Button) findViewById(R.id.closeDoorButton);
         leaveButton = (Button) findViewById(R.id.leaveGroupButton);
@@ -213,5 +248,10 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             chooseSuitorButton.setVisibility(View.GONE);
             closeDoorButton.setVisibility(View.GONE);
         }
+    }
+
+    private void displayEventClosed() {
+        Toast.makeText(this, "The event has ended. Check your chat to see if you are the lucky one.",
+                Toast.LENGTH_LONG).show();
     }
 }
