@@ -1,5 +1,6 @@
 package com.nus.alchemy.Model;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -51,6 +52,7 @@ public class SuitorListAdapter extends RecyclerView.Adapter<SuitorListAdapter.Su
                 intent.putExtra("user2", user2);
                 intent.putExtra("eventID", eventID);
                 v.getContext().startActivity(intent);
+                ((Activity)v.getContext()).finish();
             }
         });
     }

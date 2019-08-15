@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,7 +86,7 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 //listen for event to be removed
                 if (dataSnapshot.exists()) {
-                    if (!dataSnapshot.hasChild(eventID)){
+                    if (!dataSnapshot.hasChild(eventID) && !groupHost.equals(currentUserID)){
                         displayEventClosed();
                         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         startActivity(intent);
@@ -251,7 +252,9 @@ public class GroupChatActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void displayEventClosed() {
-        Toast.makeText(this, "The event has ended. Check your chat to see if you are the lucky one.",
-                Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(this, "The event has ended. Check your chat to see if you are the lucky one.",
+                Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 }
