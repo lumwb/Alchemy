@@ -8,4 +8,4 @@ they think they have the most chemistry with and start chatting with them from t
 
 This application uses Firebase as its database, and android studio Java for both the front-end and back-end.
 
-Preview:
+![Screenshot_1564409679](https://user-images.githubusercontent.com/25117015/64748723-b48b5280-d545-11e9-9407-d3d409037c77.png) =250x250
